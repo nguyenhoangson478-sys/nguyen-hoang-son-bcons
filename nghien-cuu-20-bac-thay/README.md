@@ -32,6 +32,7 @@ Mỗi hồ sơ gồm: vì sao thành huyền thoại · đọc cận văn bản 
 
 ## Demo áp dụng
 👉 **[22 — Demo kịch bản NÓI THẲNG VÀO CAMERA (nên dùng)](22-DEMO-NOI-THANG-CAMERA.md)**
+👉 **[23 — 10 kịch bản nói thẳng vào camera (bản duyệt)](23-10-KICH-BAN-DUYET.md)**
 - [21 — Demo kiểu phân cảnh phim (tham khảo khi có ekip quay dựng)](21-DEMO-KICH-BAN.md)
 
 ## Ghi chú về phương pháp
