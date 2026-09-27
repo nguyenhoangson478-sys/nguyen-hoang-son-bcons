@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>Spa Nhà Thor — video</title>
+<link href="fonts.css" rel="stylesheet">
+<link href="styles.css" rel="stylesheet">
+<style>
+body{background:#000;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#000}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden}
+.scene .cam{position:absolute;inset:0}
+svg .a,svg .eyes,svg .breath,svg .wave{transform-box:fill-box;transform-origin:center}
+svg .wave{transform-origin:50% 100%}
+.cmp i.a{transform-origin:left center}
+.sub{position:absolute;left:70px;right:70px;bottom:280px;padding:36px 46px;border-radius:36px;background:#FFFAF3;box-shadow:0 20px 50px rgba(43,36,32,.14);font:600 50px/1.32 'Be Vietnam Pro';color:#2B2420;opacity:0}
+.sub.top{top:150px;bottom:auto}
+.sub.mid{top:250px;bottom:auto;left:520px;right:60px;font-size:42px;padding:28px 34px}
+.sub.big{font:800 64px/1.22 'Be Vietnam Pro'}
+.sub.dark{background:rgba(20,19,24,.78);color:#FFFAF3}
+.sub b{color:#C45E45;font-weight:800}.sub.dark b{color:#F09A7F}
+.sub.q{font:italic 600 70px/1.2 'Lora';text-align:center}
+.sub .w{opacity:0}
+.cmp{padding:34px 44px}
+</style></head><body>
+<div id="stage"></div>
+<script src="scenes.js"></script>
+<script src="video-scenes.js"></script>
+<script>
+const FPS = 30, XF = .5;               // khung/giây, thời gian chuyển cảnh
+const RATE = 3.6;                      // âm tiết/giây của giọng đọc
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const eo = p => 1 - Math.pow(1 - p, 3);
+const eio = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+const back = p => { const c = 1.7; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+const bounce = p => { const n = 7.5625, d = 2.75;
+  if (p < 1 / d) return n * p * p; if (p < 2 / d) return n * (p -= 1.5 / d) * p + .75;
+  if (p < 2.5 / d) return n * (p -= 2.25 / d) * p + .9375; return n * (p -= 2.625 / d) * p + .984375; };
+
+// Tính mốc thời gian lời đọc cho từng cảnh
+let T = 0;
+VIDEO.forEach(sc => {
+  let t = sc.pad ?? .4;
+  sc.L = sc.lines.map(l => {
+    const o = typeof l === 'string' ? { t: l } : l;
+    const n = o.t.replace(/[*“”"]/g, '').trim().split(/\s+/).length;
+    const speak = n / RATE;
+    const line = { ...o, start: t, end: t + speak };
+    t = line.end + .45 + (/…$/.test(o.t) ? .5 : 0) + (/:$/.test(o.t) ? .15 : 0);
+    return line;
+  });
+  sc.dur = sc.dur ?? (sc.L.length ? sc.L[sc.L.length - 1].end + (sc.tail ?? .8) : 3);
+  sc.start = T; T += sc.dur;
+});
+window.TOTAL = T; window.FPS = FPS;
+
+function resolve(v, sc) {
+  const m = String(v).match(/^(L\d+|E)?((?:[+-]?[\d.]+)*)$/);
+  if (!m) throw new Error('mốc sai: ' + v);
+  const base = m[1] === 'E' ? sc.dur : m[1] ? sc.L[+m[1].slice(1) - 1].start : 0;
+  return base + (m[2].match(/[+-]?[\d.]+/g) || []).reduce((a, x) => a + +x, 0);
+}
+
+function lineHTML(text) {
+  return text.split(/(\*[^*]+\*)/).filter(Boolean).map(seg => {
+    const b = seg.startsWith('*');
+    const words = seg.replace(/\*/g, '').split(/(\s+)/);
+    const h = words.map(w => /^\s+$/.test(w) ? w : w ? `<span class="w">${w}</span>` : '').join('');
+    return b ? `<b>${h}</b>` : h;
+  }).join('');
+}
+
+const stage = document.getElementById('stage');
+VIDEO.forEach((sc, i) => {
+  const el = document.createElement('div');
+  el.className = 'scene'; el.style.background = sc.bg;
+  el.innerHTML = `<div class="cam"><svg viewBox="0 0 1080 1920" width="1080" height="1920" style="position:absolute;inset:0">${sc.svg()}</svg></div>${sc.html()}
+    <div class="sub ${sc.sub || 'bottom'}"></div>`;
+  stage.appendChild(el);
+  sc.el = el; sc.cam = sc.cam || [1, 1, 540, 960];
+  sc.camEl = el.querySelector('.cam');
+  sc.camEl.style.transformOrigin = `${sc.cam[2]}px ${sc.cam[3]}px`;
+  sc.subEl = el.querySelector('.sub'); sc.curLine = -1;
+  sc.anims = [...el.querySelectorAll('.a')].map((n, k) => {
+    const d = n.dataset;
+    const a = { n, type: d.type, t0: resolve(d.t0, sc), d: +(d.d || (d.type === 'pop' ? .45 : .6)),
+      t1: d.t1 != null ? resolve(d.t1, sc) : null, loop: d.loop, rot: +(d.rot || 0), dx: +(d.dx || 0), dy: +(d.dy || 0),
+      v: +(d.v || 0), ph: +(d.ph || 0), max: +(d.max || 1), amp: +(d.amp || 14), seed: k * 1.7 };
+    if (a.type === 'draw') { a.len = n.getTotalLength(); n.style.strokeDasharray = a.len; }
+    return a;
+  });
+  sc.eyes = [...el.querySelectorAll('.eyes')];
+  sc.breath = [...el.querySelectorAll('.breath')];
+  sc.waves = [...el.querySelectorAll('.wave')];
+  sc.talkers = [...el.querySelectorAll('[data-talk]')].map(p => [p.querySelector('.mouth'), p.querySelector('.mouth-open')]);
+});
+
+function animate(a, t) {
+  const p = clamp((t - a.t0) / a.d), e = eo(p);
+  let op = 1, tx = 0, ty = 0, sc = 1, rot = a.rot, sx = 1;
+  switch (a.type) {
+    case 'fade': op = p; break;
+    case 'up': op = p; ty = (1 - e) * 70; break;
+    case 'pop': op = clamp(p * 2.5); sc = t < a.t0 ? .3 : .3 + .7 * back(p); break;
+    case 'drop': op = t < a.t0 ? 0 : 1; ty = -(1 - bounce(p)) * 600; break;
+    case 'slide': op = p; tx = (1 - e) * a.dx; break;
+    case 'move': tx = (1 - eio(p)) * a.dx; ty = (1 - eio(p)) * a.dy; break;
+    case 'rise': op = clamp(p * 3); ty = (1 - back(p)) * 260; break;
+    case 'grow': sx = e; break;
+    case 'flash': op = t < a.t0 ? 0 : clamp(1 - (t - a.t0) / .45); break;
+    case 'dim': op = p * a.max; break;
+    case 'fall': ty = (t * a.v + a.ph) % 2300; rot += t * a.v * .15; break;
+    case 'draw': a.n.style.strokeDashoffset = a.len * (1 - eio(p)); return;
+  }
+  if (a.t1 != null) op *= 1 - clamp((t - a.t1) / .25);
+  const lt = Math.max(0, t - a.t0 - a.d);
+  if (t >= a.t0) switch (a.loop) {
+    case 'float': ty += Math.sin(lt * 1.8 + a.seed) * a.amp * .6; break;
+    case 'pulse': sc *= 1 + .05 * Math.sin(lt * 5); break;
+    case 'blink': op *= (t * 1.6) % 1 < .55 ? 1 : 0; break;
+    case 'sway': tx += Math.sin(lt * 1.1) * a.amp; ty += Math.sin(lt * 2.2) * a.amp * .25; break;
+    case 'shake': rot += Math.sin(t * 22 + a.seed) * 2.2 * Math.exp(-lt * 1.5) + Math.sin(t * 3 + a.seed) * .8; break;
+  }
+  a.n.style.opacity = op;
+  a.n.style.transform = `translate(${tx}px,${ty}px) rotate(${rot}deg) scale(${sc * sx},${sc})`;
+}
+
+function renderScene(sc, t) {
+  const cp = eio(clamp(t / sc.dur));
+  sc.camEl.style.transform = `scale(${sc.cam[0] + (sc.cam[1] - sc.cam[0]) * cp})`;
+  sc.anims.forEach(a => animate(a, t));
+  sc.eyes.forEach((e, k) => { const c = (t + k * 1.3 + .8) % 3.6; e.style.transform = `scaleY(${c < .14 ? .12 : 1})`; });
+  sc.breath.forEach((b, k) => { b.style.transform = `translateY(${Math.sin(t * 2.1 + k) * 4}px)`; });
+  sc.waves.forEach(w => { w.style.transform = `rotate(${Math.sin(t * 6) * 9}deg)`; });
+  const speaking = sc.talk && sc.L.some(l => t >= l.start && t <= l.end);
+  const open = speaking && Math.sin(t * Math.PI * 2 * 4.2) > -.1;
+  sc.talkers.forEach(([m, o]) => { if (!o) return; m.style.opacity = open ? 0 : 1; o.style.opacity = open ? 1 : 0; });
+  // Phụ đề hiện từng chữ theo lời đọc
+  let li = -1; sc.L.forEach((l, k) => { if (t >= l.start - .05) li = k; });
+  const line = sc.L[li];
+  if (li !== sc.curLine) {
+    sc.curLine = li;
+    if (line) { sc.subEl.innerHTML = lineHTML(line.t); sc.subEl.classList.toggle('q', !!line.big); sc.words = [...sc.subEl.querySelectorAll('.w')]; }
+  }
+  if (!line || line.nosub) { sc.subEl.style.opacity = 0; return; }
+  sc.subEl.style.opacity = clamp((t - sc.L[0].start + .05) / .25);
+  const n = sc.words.length, span = line.end - line.start;
+  sc.words.forEach((w, k) => { const wt = line.start + span * k / n; w.style.opacity = clamp((t - wt) / .18 + .2); });
+}
+
+window.render = function (time) {
+  VIDEO.forEach((sc, i) => {
+    const t = time - sc.start;
+    const visible = t >= 0 && t < sc.dur + XF;
+    if (!visible) { sc.el.style.opacity = 0; sc.el.style.visibility = 'hidden'; return; }
+    sc.el.style.visibility = 'visible';
+    const fin = i === 0 ? 1 : clamp(t / XF);
+    sc.el.style.opacity = fin;
+    sc.el.style.transform = `scale(${1.04 - .04 * eo(fin)})`;
+    renderScene(sc, t);
+  });
+};
+window.TIMELINE = VIDEO.map((sc, i) => ({ i: i + 1, start: +sc.start.toFixed(2), dur: +sc.dur.toFixed(2),
+  lines: sc.L.map(l => ({ t: l.t.replace(/\*/g, ''), start: +(sc.start + l.start).toFixed(2), end: +(sc.start + l.end).toFixed(2) })) }));
+render(0);
+</script></body></html>

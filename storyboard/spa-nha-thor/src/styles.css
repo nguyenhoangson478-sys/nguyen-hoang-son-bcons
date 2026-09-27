@@ -1,0 +1,43 @@
+*{box-sizing:border-box;margin:0}
+body{background:#999;font-family:'Be Vietnam Pro',sans-serif;color:#2B2420}
+.frame{position:relative;width:1080px;height:1920px;overflow:hidden}
+.frame svg.ill{position:absolute;inset:0}
+.no{position:absolute;top:60px;left:60px;font:700 26px 'Be Vietnam Pro';letter-spacing:.1em;opacity:.45}
+.dk .no{color:#fff}
+.cap{position:absolute;left:70px;right:70px;padding:40px 48px;border-radius:36px;background:#FFFAF3;box-shadow:0 20px 50px rgba(43,36,32,.12)}
+.cap.bottom{bottom:280px}.cap.top{top:150px}.cap.mid{top:250px;left:520px;right:60px;padding:30px 36px}
+.cap .t{font:600 50px/1.3 'Be Vietnam Pro'}
+.cap.big .t{font:800 64px/1.22 'Be Vietnam Pro'}
+.cap .s{font:400 42px/1.35 'Be Vietnam Pro';margin-top:10px;color:#5b4f47}
+.cap.mid .t{font-size:40px}.cap.mid .s{font-size:40px}
+.cap b{color:#C45E45;font-weight:800}
+.cap.dark{background:rgba(20,19,24,.72);color:#FFFAF3}
+.cap.dark .s{color:#E8DED3}.cap.dark b,.hl{color:#F09A7F;font-weight:800}
+.cap.big .s{font:800 64px/1.22 'Be Vietnam Pro';margin-top:6px}
+.cal{position:absolute;top:170px;right:80px;width:330px;background:#FFFAF3;border-radius:28px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.12);text-align:center;transform:rotate(3deg)}
+.cal .m{background:#2F4A3F;color:#fff;font:800 32px 'Be Vietnam Pro';padding:16px;letter-spacing:.15em}
+.cal .d{padding:20px 0 6px}.cal .d span{display:inline-block;font:800 120px/1 'Be Vietnam Pro';padding:14px 30px;border:8px solid #D9735A;border-radius:50%}
+.cal .l{font:700 30px 'Be Vietnam Pro';padding:6px 16px 26px;color:#C45E45}
+.bub{position:absolute;padding:30px 42px;border-radius:40px;font:600 46px/1.25 'Be Vietnam Pro';background:#FFFAF3;box-shadow:0 16px 40px rgba(43,36,32,.14)}
+.bub.r{border-bottom-right-radius:8px}.bub.l{border-bottom-left-radius:8px}
+.bub.big{font-size:54px;background:#2F4A3F;color:#FFFAF3}.bub b{color:#C45E45}.bub.big b{color:#F2C7B6}
+.price{position:absolute;width:130px;height:130px;border-radius:50%;background:#C9A45C;color:#fff;display:grid;place-items:center;font:800 40px 'Be Vietnam Pro';transform:rotate(-12deg)}
+.msg{position:absolute;padding:24px 34px;border-radius:34px;font:500 36px 'Be Vietnam Pro';right:270px}
+.msg.out{background:#8DA68A;color:#fff}
+.msg.rec{background:transparent;border:3px dashed #B7ABA0;color:#8F837A;font-style:italic}
+.cmp{position:absolute;left:70px;right:70px;bottom:260px;background:#FFFAF3;border-radius:36px;padding:40px 48px;box-shadow:0 20px 50px rgba(43,36,32,.12)}
+.cmp .row{display:flex;align-items:center;gap:24px;margin-bottom:22px;font:700 34px 'Be Vietnam Pro'}
+.cmp .row span{width:180px;flex:none}.cmp .row i{display:block;height:44px;border-radius:22px;background:#8DA68A}
+.cmp .row i.over{background:linear-gradient(90deg,#D9735A,#B8412C);margin-right:-120px}
+.cmp .t{font:600 46px/1.3 'Be Vietnam Pro';margin-top:16px}.cmp b{color:#C45E45}
+.quote{position:absolute;left:60px;right:60px;bottom:300px;text-align:center;font:italic 600 82px/1.2 'Lora';color:#FFFAF3}
+.quote.light{top:190px;bottom:auto;color:#2F4A3F;font-size:76px}.quote b{color:#C45E45;font-weight:700}
+.note{position:absolute;padding:24px 34px;background:#fff;border-radius:26px;font:italic 500 38px 'Lora';box-shadow:0 12px 30px rgba(43,36,32,.12)}
+.badge{position:absolute;width:210px;height:210px;border-radius:50%;background:#C9A45C;color:#fff;text-align:center;font:700 28px/1.2 'Be Vietnam Pro';display:flex;flex-direction:column;justify-content:center}
+.badge b{font:800 84px/1 'Be Vietnam Pro'}
+.ad{position:absolute;padding:26px 36px;background:#D9735A;color:#fff;font:800 50px/1.1 'Be Vietnam Pro';border-radius:22px;box-shadow:0 14px 34px rgba(0,0,0,.18)}
+.ad small{display:block;font:600 30px 'Be Vietnam Pro';opacity:.9;margin-top:6px}
+.ad.y{background:#E9B949;color:#2B2420}.ad.g{background:#2B2420}
+.logo{position:absolute;top:170px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:26px;color:#FFFAF3}
+.logo .n{font:800 76px/1 'Be Vietnam Pro'}.logo .k{font:italic 500 36px 'Lora';opacity:.85;margin-top:12px}
+.follow{position:absolute;top:410px;left:50%;transform:translateX(-50%);background:#D9735A;color:#fff;font:800 44px 'Be Vietnam Pro';padding:24px 60px;border-radius:60px}

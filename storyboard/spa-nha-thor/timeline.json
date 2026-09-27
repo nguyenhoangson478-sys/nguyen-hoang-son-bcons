@@ -1,0 +1,371 @@
+[
+ {
+  "i": 1,
+  "start": 0,
+  "dur": 4.08,
+  "lines": [
+   {
+    "t": "Bạn ấy chỉ muốn hết mụn trước ngày tốt nghiệp.",
+    "start": 0.4,
+    "end": 3.18
+   }
+  ]
+ },
+ {
+  "i": 2,
+  "start": 4.08,
+  "dur": 5.48,
+  "lines": [
+   {
+    "t": "Không ngờ thứ mất đi sau đó…",
+    "start": 4.48,
+    "end": 6.42
+   },
+   {
+    "t": "lại không chỉ là tiền.",
+    "start": 7.37,
+    "end": 8.76
+   }
+  ]
+ },
+ {
+  "i": 3,
+  "start": 9.56,
+  "dur": 14.37,
+  "lines": [
+   {
+    "t": "Có một cô bé từng tìm đến Thoa chỉ vì một chuyện rất nhỏ:",
+    "start": 9.96,
+    "end": 13.85
+   },
+   {
+    "t": "cô bé sắp chụp ảnh tốt nghiệp.",
+    "start": 14.45,
+    "end": 16.39
+   },
+   {
+    "t": "Da có mấy nốt mụn.",
+    "start": 16.84,
+    "end": 18.23
+   },
+   {
+    "t": "Cô bé muốn đẹp hơn một chút trong ngày quan trọng nhất của tuổi sinh viên.",
+    "start": 18.68,
+    "end": 23.13
+   }
+  ]
+ },
+ {
+  "i": 4,
+  "start": 23.93,
+  "dur": 11.89,
+  "lines": [
+   {
+    "t": "Rồi cô bé bắt đầu nghe người ta tư vấn.",
+    "start": 24.33,
+    "end": 27.11
+   },
+   {
+    "t": "Một liệu trình.",
+    "start": 27.56,
+    "end": 28.39
+   },
+   {
+    "t": "Rồi thêm một sản phẩm.",
+    "start": 28.84,
+    "end": 30.23
+   },
+   {
+    "t": "Rồi thêm một lần chăm sóc nữa.",
+    "start": 30.68,
+    "end": 32.62
+   },
+   {
+    "t": "Mỗi thứ nghe qua đều có lý.",
+    "start": 33.07,
+    "end": 35.02
+   }
+  ]
+ },
+ {
+  "i": 5,
+  "start": 35.82,
+  "dur": 5.21,
+  "lines": [
+   {
+    "t": "Cho đến một ngày…",
+    "start": 36.22,
+    "end": 37.33
+   },
+   {
+    "t": "cô bé không còn dám soi gương.",
+    "start": 38.28,
+    "end": 40.22
+   }
+  ]
+ },
+ {
+  "i": 6,
+  "start": 41.02,
+  "dur": 4.4,
+  "lines": []
+ },
+ {
+  "i": 7,
+  "start": 45.42,
+  "dur": 11.16,
+  "lines": [
+   {
+    "t": "Mụn nhiều hơn.",
+    "start": 45.82,
+    "end": 46.66
+   },
+   {
+    "t": "Da đỏ hơn.",
+    "start": 47.11,
+    "end": 47.94
+   },
+   {
+    "t": "Và số tiền bỏ ra thì đã nhiều hơn rất nhiều",
+    "start": 48.39,
+    "end": 51.44
+   },
+   {
+    "t": "so với số tiền ban đầu cô bé định dành cho việc chăm da.",
+    "start": 51.89,
+    "end": 55.78
+   }
+  ]
+ },
+ {
+  "i": 8,
+  "start": 56.58,
+  "dur": 9.32,
+  "lines": [
+   {
+    "t": "Điều đau nhất không phải là mất tiền.",
+    "start": 56.98,
+    "end": 59.21
+   },
+   {
+    "t": "Mà là lúc ấy cô bé vẫn không biết:",
+    "start": 59.66,
+    "end": 62.16
+   },
+   {
+    "t": "“Rốt cuộc da mình đang bị gì?”",
+    "start": 62.76,
+    "end": 64.7
+   }
+  ]
+ },
+ {
+  "i": 9,
+  "start": 65.9,
+  "dur": 6.29,
+  "lines": [
+   {
+    "t": "Mười năm làm nghề,",
+    "start": 66.3,
+    "end": 67.41
+   },
+   {
+    "t": "Thoa đã nghe và chứng kiến quá nhiều câu chuyện như vậy.",
+    "start": 67.86,
+    "end": 71.19
+   }
+  ]
+ },
+ {
+  "i": 10,
+  "start": 72.19,
+  "dur": 18.99,
+  "lines": [
+   {
+    "t": "Và Thoa bắt đầu nghĩ:",
+    "start": 72.59,
+    "end": 73.98
+   },
+   {
+    "t": "có phải người ta thiếu tiền đâu.",
+    "start": 74.58,
+    "end": 76.53
+   },
+   {
+    "t": "Người ta thiếu một người nói thật với họ ngay từ đầu.",
+    "start": 76.98,
+    "end": 80.31
+   },
+   {
+    "t": "Nói rằng cái này chưa cần làm.",
+    "start": 80.76,
+    "end": 82.71
+   },
+   {
+    "t": "Cái kia chưa cần mua.",
+    "start": 83.16,
+    "end": 84.54
+   },
+   {
+    "t": "Và có những lúc…",
+    "start": 84.99,
+    "end": 86.11
+   },
+   {
+    "t": "điều tốt nhất cho làn da là đừng làm thêm gì nữa.",
+    "start": 87.06,
+    "end": 90.39
+   }
+  ]
+ },
+ {
+  "i": 11,
+  "start": 91.19,
+  "dur": 5.18,
+  "lines": [
+   {
+    "t": "Đó là lý do Thoa rời Sài Gòn,",
+    "start": 91.59,
+    "end": 93.81
+   },
+   {
+    "t": "về Làng Đại học.",
+    "start": 94.26,
+    "end": 95.37
+   }
+  ]
+ },
+ {
+  "i": 12,
+  "start": 96.37,
+  "dur": 14.33,
+  "lines": [
+   {
+    "t": "Ở đây có rất nhiều bạn trẻ.",
+    "start": 96.77,
+    "end": 98.72
+   },
+   {
+    "t": "Tuổi còn rất dài.",
+    "start": 99.17,
+    "end": 100.28
+   },
+   {
+    "t": "Nhưng tiền thì thường rất ngắn.",
+    "start": 100.73,
+    "end": 102.39
+   },
+   {
+    "t": "Trong khi quảng cáo ngoài kia…",
+    "start": 102.84,
+    "end": 104.51
+   },
+   {
+    "t": "lại luôn có cách khiến người ta cảm thấy mình đang thiếu một thứ gì đó.",
+    "start": 105.46,
+    "end": 109.91
+   }
+  ]
+ },
+ {
+  "i": 13,
+  "start": 110.71,
+  "dur": 23.22,
+  "lines": [
+   {
+    "t": "Vì vậy Thoa bắt đầu hành trình xây kênh Spa Nhà Thor",
+    "start": 111.11,
+    "end": 114.44
+   },
+   {
+    "t": "với một mong muốn rất đơn giản:",
+    "start": 114.89,
+    "end": 116.83
+   },
+   {
+    "t": "Trước khi bạn bỏ tiền cho làn da, hãy hiểu nó trước.",
+    "start": 117.43,
+    "end": 120.77
+   },
+   {
+    "t": "Thoa không bán phép màu.",
+    "start": 121.22,
+    "end": 122.61
+   },
+   {
+    "t": "Thoa muốn chia sẻ những điều mà đáng lẽ bạn nên biết trước khi bỏ tiền,",
+    "start": 123.06,
+    "end": 127.5
+   },
+   {
+    "t": "trước khi thử một thứ gì đó lên da,",
+    "start": 127.95,
+    "end": 130.45
+   },
+   {
+    "t": "và trước khi quá muộn để quay lại.",
+    "start": 130.9,
+    "end": 133.12
+   }
+  ]
+ },
+ {
+  "i": 14,
+  "start": 133.92,
+  "dur": 15.89,
+  "lines": [
+   {
+    "t": "Để một ngày nào đó…",
+    "start": 134.32,
+    "end": 135.71
+   },
+   {
+    "t": "khi bước vào một spa,",
+    "start": 136.66,
+    "end": 138.05
+   },
+   {
+    "t": "bạn không còn ngồi đó chờ người khác quyết định thay mình.",
+    "start": 138.5,
+    "end": 141.83
+   },
+   {
+    "t": "Bạn biết làn da của mình cần gì.",
+    "start": 142.28,
+    "end": 144.51
+   },
+   {
+    "t": "Và bạn có quyền nói:",
+    "start": 144.96,
+    "end": 146.34
+   },
+   {
+    "t": "Không, cái này tôi chưa cần.",
+    "start": 146.94,
+    "end": 148.61
+   }
+  ]
+ },
+ {
+  "i": 15,
+  "start": 149.81,
+  "dur": 13.41,
+  "lines": [
+   {
+    "t": "Nếu bạn đang loay hoay với làn da của mình…",
+    "start": 150.21,
+    "end": 152.99
+   },
+   {
+    "t": "thì ở lại đây với kênh Spa Nhà Thor.",
+    "start": 153.94,
+    "end": 156.44
+   },
+   {
+    "t": "Thoa sẽ cùng bạn bắt đầu từ những điều căn bản nhất.",
+    "start": 156.89,
+    "end": 160.22
+   }
+  ]
+ }
+]

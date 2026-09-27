@@ -1,13 +1,28 @@
-# Storyboard · Spa Nhà Thor
+# Spa Nhà Thor: storyboard và video hoạt hình
 
-Video dọc 9:16, 15 cảnh, dài khoảng 2 phút 10 giây (ước tính theo giọng đọc tự nhiên).
+Video dọc 9:16, 1080×1920, 30 khung/giây, 15 cảnh, dài khoảng 2 phút 43 giây.
 
-- `storyboard.png`: tấm tổng hợp, gồm hình, lời đọc, hình ảnh và chuyển động của từng cảnh.
-- `frames/01.png` … `frames/15.png`: từng khung 1080×1920.
-- `src/scenes.js`: nội dung và hình vẽ (SVG) của từng cảnh. Sửa ở đây rồi render lại.
+## Kết quả
+- `spa-nha-thor.mp4`: video hoạt hình có nhạc nền piano tạm và hiệu ứng âm thanh.
+- `spa-nha-thor-khong-nhac.mp4`: cùng video, không có âm thanh. Dùng bản này để tự ghép giọng đọc và nhạc trong CapCut.
+- `timeline.json`: mốc thời gian (giây) của từng cảnh và từng câu lời đọc. Dùng để canh giọng đọc cho khớp.
+- `storyboard.png` và `frames/`: storyboard tĩnh.
 
-Render lại:
+## Cấu trúc
+- `src/scenes.js`: hình vẽ nhân vật và bối cảnh, dùng cho cả storyboard lẫn video.
+- `src/video-scenes.js`: lời đọc và chuyển động của từng cảnh.
+- `src/video.html`: bộ máy chuyển động (phụ đề chạy từng chữ, chớp mắt, miệng nói, camera zoom, chuyển cảnh).
+  Tốc độ đọc giả định là `RATE = 3.6` âm tiết/giây.
+- `audio.py`: tạo nhạc nền và hiệu ứng âm thanh.
 
+## Render lại
 ```bash
-NODE_PATH=$(npm root -g) node render.mjs
+pip install imageio-ffmpeg numpy
+export NODE_PATH=$(npm root -g)
+node render.mjs          # storyboard tĩnh
+node render-video.mjs    # video (chưa có tiếng)
+node sfx-events.mjs && python3 audio.py   # âm thanh -> build/audio.wav
 ```
+Sau đó chạy `./mux.sh` để ghép tiếng: bản im lặng đổi tên thành `spa-nha-thor-khong-nhac.mp4`, bản có tiếng là `spa-nha-thor.mp4`.
+
+Xem trước một khung bất kỳ: `node render-video.mjs --still 12.5 40`, ảnh ra trong `build/`.

@@ -39,11 +39,18 @@ function palm(fill) {
   </g>`;
 }
 
+// Thuộc tính chuyển động cho video (bản storyboard tĩnh bỏ qua chúng).
+// t0 là giây trong cảnh, hoặc mốc lời đọc dạng 'L2+0.3' (dòng thứ 2 của cảnh, cộng 0.3s).
+function A(type, t0 = 0, o = {}) {
+  return ` class="a" data-type="${type}" data-t0="${t0}"` + Object.entries(o).map(([k, v]) => ` data-${k}="${v}"`).join('');
+}
+
 // Bust character. Head center at (x,y), scale s.
 function person(o = {}) {
   const { x = 0, y = 0, s = 1, expr = 'smile', acne = 0, red = false, cap = false, hair = 'long',
     shirt = '#F2E3D0', collar = null, back = false, handCheek = false, raise = 0, tear = false,
-    tag = null, hairColor = C.hair, blush = true, suitcase = false } = o;
+    tag = null, hairColor = C.hair, blush = true, suitcase = false, talk = false, acneT0 = null, redT0 = null,
+    raiseT0 = null, wave = false } = o;
   const H = hairColor;
   let backHair = '';
   if (hair === 'long') backHair = `<path d="M-150,-20 C-172,-175 172,-175 150,-20 L168,250 C80,285 -80,285 -168,250 Z" fill="${H}"/>`;
@@ -63,13 +70,13 @@ function person(o = {}) {
     let spots = '';
     for (let i = 0; i < acne; i++) {
       const [ax, ay] = ACNE[i];
-      spots += `<circle cx="${ax}" cy="${ay}" r="8" fill="${C.acne}" opacity=".9"/><circle cx="${ax - 2}" cy="${ay - 3}" r="2.4" fill="#fff" opacity=".6"/>`;
+      spots += `<g${acneT0 != null ? A('pop', `${acneT0}+${(i * .09).toFixed(2)}`) : ''}><circle cx="${ax}" cy="${ay}" r="8" fill="${C.acne}" opacity=".9"/><circle cx="${ax - 2}" cy="${ay - 3}" r="2.4" fill="#fff" opacity=".6"/></g>`;
     }
     face = `<ellipse cx="-122" cy="10" rx="18" ry="26" fill="${C.skin}"/><ellipse cx="122" cy="10" rx="18" ry="26" fill="${C.skin}"/>
       <ellipse cx="0" cy="0" rx="122" ry="136" fill="${C.skin}"/>
-      ${red ? `<ellipse cx="-62" cy="40" rx="52" ry="40" fill="#E5604E" opacity=".35"/><ellipse cx="62" cy="40" rx="52" ry="40" fill="#E5604E" opacity=".35"/><ellipse cx="0" cy="-40" rx="60" ry="26" fill="#E5604E" opacity=".2"/>` : ''}
+      ${red ? `<g${redT0 != null ? A('fade', redT0, { d: 1.2 }) : ''}><ellipse cx="-62" cy="40" rx="52" ry="40" fill="#E5604E" opacity=".35"/><ellipse cx="62" cy="40" rx="52" ry="40" fill="#E5604E" opacity=".35"/><ellipse cx="0" cy="-40" rx="60" ry="26" fill="#E5604E" opacity=".2"/></g>` : ''}
       ${blush && !red ? `<ellipse cx="-70" cy="40" rx="24" ry="14" fill="${C.blush}" opacity=".8"/><ellipse cx="70" cy="40" rx="24" ry="14" fill="${C.blush}" opacity=".8"/>` : ''}
-      ${spots}${eyes(expr)}${mouth(expr)}
+      ${spots}<g class="eyes">${eyes(expr)}</g><g class="mouth">${mouth(expr)}</g>${talk ? `<g class="mouth-open" opacity="0">${mouth('talk')}</g>` : ''}
       ${tear ? `<path d="M52,24 q-10,22 0,30 q10,-8 0,-30z" fill="#9CC3DA"/>` : ''}
       ${hair === 'short' ? `<path d="M-128,-20 C-140,-160 140,-160 128,-20 C100,-80 40,-100 0,-90 C-50,-100 -100,-80 -128,-20 Z" fill="${H}"/>`
         : `<path d="M-126,-26 C-132,-158 132,-158 126,-26 C92,-92 24,-100 -8,-72 C-40,-102 -100,-84 -126,-26 Z" fill="${H}"/>`}`;
@@ -82,10 +89,10 @@ function person(o = {}) {
     <rect x="140" y="-84" width="20" height="36" rx="6" fill="${C.gold}"/>` : '';
 
   const cheekHand = handCheek ? `<g transform="translate(-118,150) rotate(12)"><path d="M0,0 L-30,160" stroke="${shirt}" stroke-width="70" stroke-linecap="round"/>${palm(C.skin)}</g>` : '';
-  const raised = raise ? `<g transform="translate(${raise * 250},120)"><path d="M0,40 L${raise * -40},260" stroke="${shirt}" stroke-width="80" stroke-linecap="round"/>${palm(C.skin)}</g>` : '';
+  const raised = raise ? `<g transform="translate(${raise * 250},120)"><g${raiseT0 != null ? A('rise', raiseT0) : ''}><g${wave ? ' class="wave"' : ''}><path d="M0,40 L${raise * -40},260" stroke="${shirt}" stroke-width="80" stroke-linecap="round"/>${palm(C.skin)}</g></g></g>` : '';
   const bag = suitcase ? `<g transform="translate(230,430)"><rect x="-70" y="-120" width="140" height="170" rx="18" fill="${C.coral}"/><rect x="-30" y="-150" width="60" height="36" rx="10" fill="none" stroke="${C.ink}" stroke-width="10"/><line x1="-70" y1="-50" x2="70" y2="-50" stroke="#fff" stroke-opacity=".4" stroke-width="8"/></g>` : '';
 
-  return `<g transform="translate(${x},${y}) scale(${s})">${backHair}${neck}${body}${bag}${face}${capSvg}${cheekHand}${raised}</g>`;
+  return `<g transform="translate(${x},${y}) scale(${s})"${talk ? ' data-talk="1"' : ''}><g class="breath">${backHair}${neck}${body}${bag}${face}${capSvg}${cheekHand}${raised}</g></g>`;
 }
 
 const coin = (x, y, r, rot = 0, op = 1) => `<g transform="translate(${x},${y}) rotate(${rot})" opacity="${op}">
