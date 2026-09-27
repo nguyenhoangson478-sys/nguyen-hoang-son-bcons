@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>Storyboard Spa Nhà Thor</title>
+<link href="fonts.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:2400px;background:#F7F0E6;font-family:'Be Vietnam Pro',sans-serif;color:#2B2420;padding:80px}
+h1{font:800 72px 'Be Vietnam Pro'}.sub{font:italic 500 34px 'Lora';color:#7A6E66;margin:12px 0 50px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.card{display:flex;gap:28px;background:#FFFAF3;border-radius:28px;padding:24px;box-shadow:0 10px 30px rgba(43,36,32,.08)}
+.card img{width:270px;height:480px;border-radius:16px;flex:none}
+.meta{font-size:22px;line-height:1.45}
+.h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.h b{font:800 30px 'Be Vietnam Pro'}.h span{font:700 20px 'Be Vietnam Pro';color:#fff;background:#2F4A3F;padding:4px 12px;border-radius:20px}
+.k{font:800 16px 'Be Vietnam Pro';letter-spacing:.12em;color:#C45E45;margin-top:12px}
+.vo{font:italic 500 22px/1.45 'Lora'}
+</style></head><body>
+<h1>Storyboard · Spa Nhà Thor</h1>
+<div class="sub">Video dọc 9:16 · 15 cảnh · ~2 phút 10 giây (ước tính theo tốc độ đọc tự nhiên)</div>
+<div class="grid" id="g"></div>
+<script src="scenes.js"></script>
+<script>
+document.getElementById('g').innerHTML=SCENES.map((s,i)=>{const n=String(i+1).padStart(2,'0');return `<div class="card"><img src="../frames/${n}.png"><div class="meta">
+<div class="h"><b>${n} · ${s.title}</b><span>${s.time}</span></div>
+<div class="k">LỜI ĐỌC</div><div class="vo">${s.vo}</div>
+<div class="k">HÌNH ẢNH</div><div>${s.visual}</div>
+<div class="k">CHUYỂN ĐỘNG / ÂM THANH</div><div>${s.motion}</div></div></div>`}).join('');
+</script></body></html>
