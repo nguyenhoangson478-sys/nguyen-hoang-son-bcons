@@ -30,7 +30,8 @@ Mỗi hồ sơ gồm: vì sao thành huyền thoại · đọc cận văn bản 
 | [19](19-ernest-hemingway.md) | Ernest Hemingway | *Ông già và biển cả*, *Những quả đồi như đàn voi trắng* | Tảng băng trôi; câu ngắn |
 | [20](20-garcia-marquez.md) | García Márquez | *Trăm năm cô đơn*, *Ký sự về một cái chết được báo trước* | Giọng bình thản; "425 con voi" |
 
-
+## Demo áp dụng
+👉 **[21 — Demo 5 kịch bản theo công thức THOR](21-DEMO-KICH-BAN.md)**
 
 ## Ghi chú về phương pháp
 - Phân tích dựa trên nội dung các tác phẩm gốc (qua các bản dịch uy tín được ghi trong từng hồ sơ), thư từ và phỏng vấn của chính các tác giả, cùng các công trình phê bình kinh điển.
