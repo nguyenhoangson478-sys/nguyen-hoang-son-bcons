@@ -31,7 +31,8 @@ Mỗi hồ sơ gồm: vì sao thành huyền thoại · đọc cận văn bản 
 | [20](20-garcia-marquez.md) | García Márquez | *Trăm năm cô đơn*, *Ký sự về một cái chết được báo trước* | Giọng bình thản; "425 con voi" |
 
 ## Demo áp dụng
-👉 **[21 — Demo 5 kịch bản theo công thức THOR](21-DEMO-KICH-BAN.md)**
+👉 **[22 — Demo kịch bản NÓI THẲNG VÀO CAMERA (nên dùng)](22-DEMO-NOI-THANG-CAMERA.md)**
+- [21 — Demo kiểu phân cảnh phim (tham khảo khi có ekip quay dựng)](21-DEMO-KICH-BAN.md)
 
 ## Ghi chú về phương pháp
 - Phân tích dựa trên nội dung các tác phẩm gốc (qua các bản dịch uy tín được ghi trong từng hồ sơ), thư từ và phỏng vấn của chính các tác giả, cùng các công trình phê bình kinh điển.
