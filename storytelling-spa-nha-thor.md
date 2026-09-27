@@ -2,6 +2,8 @@
 
 > Đúc kết từ 20 bậc thầy văn chương & sân khấu thế giới — áp dụng cho video TikTok/Reels, bài Facebook, caption và kịch bản tư vấn của Spa.
 
+> ⚠️ **Đây là bản tóm tắt đầu tiên (phiên bản 1).** Bản nghiên cứu chuyên sâu — 20 hồ sơ phân tích từng tác giả và công thức THOR 2.0 — nằm trong thư mục [`nghien-cuu-20-bac-thay/`](nghien-cuu-20-bac-thay/README.md). Hãy đọc từ [file tổng hợp](nghien-cuu-20-bac-thay/00-TONG-HOP-CONG-THUC-THOR.md).
+
 ---
 
 ## PHẦN 1 — 20 nhà văn, nhà soạn giả vĩ đại nhất lịch sử
