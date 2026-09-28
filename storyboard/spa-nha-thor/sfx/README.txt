@@ -6,3 +6,4 @@ Tiếng hiệu ứng dùng trong audio.py (xem bảng WHOOSH, BOOM_AT):
 Chạy lại: python3 audio.py && ./mux.sh
 - nhac-piano.mp3: Sad Emotional Piano (đoạn Thoa → sứ mệnh, B-roll)
 - nhac-epic.mp3: Epic Cinematic (tự quyết → cao trào → kết, B-roll)
+- khoc.mp3: tiếng khóc nấc của cô bé (5 cảnh khóc, B-roll)
