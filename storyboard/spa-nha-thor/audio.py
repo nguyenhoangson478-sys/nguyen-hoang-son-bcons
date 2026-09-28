@@ -125,17 +125,44 @@ def load_sfx(name, ch=1):
         x = x.reshape(-1, ch)
     return x / (np.abs(x).max() or 1), files[0].name
 
-ext = load_sfx('whoosh')
-if ext:
-    wsig, wname = ext
-    env = np.convolve(np.abs(wsig), np.ones(2205) / 2205, 'same')
-    peak = env.argmax() / SR          # đỉnh tiếng whoosh rơi đúng lúc chuyển cảnh
-    print('whoosh:', wname, f'đỉnh ở {peak:.2f}s')
-    for at in ev['scenes'][1:]:
-        add(sfx, wsig * .45, max(0, at + .25 - peak))
-else:
-    for at in ev['scenes'][1:]:
+# Tiếng chuyển cảnh theo cảnh được chuyển tới (số cảnh 2–15 -> file trong sfx/)
+WHOOSH = {2: 'whoosh-3',                                 # hook: ngắn, dứt khoát
+          3: 'whoosh-14', 4: 'whoosh-14',                # kể chuyện: vừa phải
+          5: 'whoosh-5', 6: 'whoosh-5', 7: 'whoosh-5', 8: 'whoosh-5',   # đoạn tuyệt vọng: trầm, u ám
+          9: 'whoosh-18',                                # Thoa xuất hiện: nhẹ, sáng
+          10: 'whoosh-30', 11: 'whoosh-14', 12: 'whoosh-30', 13: 'whoosh-14', 14: 'whoosh-30', 15: 'whoosh-18'}
+LOUDER = {'whoosh-5': 1.4}                               # tiếng u ám cho nổi hơn chút
+BOOM_AT = [5]            # cảnh có tiếng boom khi chuyển tới: tuyệt vọng bất ngờ đổ ập (sfx/boom.*)
+
+cache = {}
+for k, at in enumerate(ev['scenes'][1:], start=2):
+    name = WHOOSH.get(k, 'whoosh')
+    if name not in cache:
+        got = load_sfx(name)
+        if got:
+            w = got[0]
+            env = np.convolve(np.abs(w), np.ones(2205) / 2205, 'same')
+            act = w[env > env.max() * .1]
+            w = w / (np.sqrt(np.mean(act ** 2)) or 1) * .1   # cân độ to giữa các file
+            cache[name] = (w, env.argmax() / SR)
+        else:
+            cache[name] = None
+    if cache[name]:
+        w, peak = cache[name]
+        lead = -.05 if k in BOOM_AT else .25     # có boom: whoosh dâng lên ngay trước tiếng nổ
+        add(sfx, w * LOUDER.get(name, 1), max(0, at + lead - peak))   # đỉnh tiếng rơi vào lúc chuyển cảnh
+    else:
         add(sfx, whoosh() * .22, at - .25)
+print('whoosh:', ', '.join(f'{k}:{WHOOSH.get(k)}' for k in range(2, 16) if cache.get(WHOOSH.get(k))))
+boom = load_sfx('boom')
+if boom:
+    b = boom[0]
+    env = np.convolve(np.abs(b), np.ones(441) / 441, 'same')
+    hit = np.argmax(env > env.max() * .3) / SR        # bỏ khoảng lặng đầu file
+    for k in BOOM_AT:
+        at = ev['scenes'][k - 1]
+        add(sfx, b * .55, max(0, at + .05 - hit))
+        print(f'boom: cảnh {k}, nổ ở {at + .05:.2f}s')
 for at in ev['pops']:
     add(sfx, pop() * .28, at)
 for at in ev['drops']:
@@ -153,24 +180,28 @@ L, R = left * .32, right * .32
 bed = load_sfx('nhac-kinh-di', ch=2)
 if bed:
     hx, hname = bed
-    s5, s7, s9 = ev['scenes'][4], ev['scenes'][6], ev['scenes'][8]
+    tl = json.loads((DIR / 'timeline.json').read_text())
+    sign = tl[3]['lines'][-1]['start']          # "Mỗi thứ nghe qua đều có lý." — dấu hiệu đầu tiên
+    recall = ev['scenes'][5] + 2.1              # lúc tin nhắn bị thu hồi (cảnh 6)
+    s9 = ev['scenes'][8]
     HIT = 9.8                                   # giây nhạc bùng lên trong file gốc
-    start = s7 - HIT                            # để cao trào rơi đúng "Mụn nhiều hơn"
-    skip = max(0, s5 - .6 - start)              # nếu phần dồn dài hơn, cắt bớt đầu
+    start = recall - HIT                        # cao trào rơi đúng lúc thu hồi tin nhắn
+    skip = max(0, sign - start)                 # phần dồn dài hơn khoảng có sẵn thì cắt bớt đầu
     start += skip
     seg = hx[int(skip * SR):]
     hl, hr = np.zeros(N), np.zeros(N)
     add(hl, seg[:, 0], start); add(hr, seg[:, 1], start)
-    fade_in = ramp(s5 - .6, s5 + .8)
+    fade_in = ramp(sign - .2, sign + 1.5)
     fade_out = 1 - ramp(s9 - 1.6, s9 + .5)      # tắt sau câu "Rốt cuộc da mình đang bị gì?"
+    s7 = recall
     env = fade_in * fade_out
     # Cân mức: đoạn cao trào to hơn piano khoảng 3 dB
     piano_rms = np.sqrt(np.mean(L[int(s9 * SR):int((s9 + 20) * SR)] ** 2))
     loud = hl[int(s7 * SR):int((s7 + 10) * SR)]
     gain = piano_rms * 1.41 / (np.sqrt(np.mean(loud ** 2)) or 1)
-    duck = 1 - env                              # tắt piano trong đoạn này
+    duck = 1 - ramp(sign - .2, sign + 2.5) * fade_out   # piano rút dần khi nhạc kinh dị len vào
     L, R = L * duck + hl * env * gain, R * duck + hr * env * gain
-    print(f'nhạc nền đoạn tuyệt vọng: {hname}, {s5 - .6:.1f}s → {s9 + .5:.1f}s, cao trào ở {s7:.1f}s')
+    print(f'nhạc nền đoạn tuyệt vọng: {hname}, {sign - .2:.1f}s → {s9 + .5:.1f}s, cao trào ở {recall:.1f}s')
 
 L = L + sfx
 R = R + sfx
