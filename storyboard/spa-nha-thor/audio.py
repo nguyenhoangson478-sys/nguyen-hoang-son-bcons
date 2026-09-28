@@ -167,8 +167,14 @@ for at in ev['pops']:
     add(sfx, pop() * .28, at)
 for at in ev['drops']:
     add(sfx, thud() * .5, at)
+cam = load_sfx('camera')                     # tiếng máy ảnh riêng: sfx/camera.*
 for at in ev['flashes']:
-    add(sfx, shutter() * .5, at)
+    if cam:
+        c = cam[0]
+        env = np.convolve(np.abs(c), np.ones(220) / 220, 'same')
+        add(sfx, c * .6, max(0, at - env.argmax() / SR))   # tiếng click to nhất trùng lúc chớp sáng
+    else:
+        add(sfx, shutter() * .5, at)
 
 def ramp(t0, t1):
     """0 trước t0, lên 1 ở t1 (dạng cos, mượt)."""

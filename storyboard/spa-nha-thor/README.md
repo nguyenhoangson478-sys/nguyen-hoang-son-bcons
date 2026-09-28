@@ -25,6 +25,7 @@ node sfx-events.mjs && python3 audio.py   # âm thanh -> build/audio.wav
 ```
 Tiếng riêng trong `sfx/` (bảng phân vai nằm ở đầu phần hiệu ứng trong `audio.py`):
 - `whoosh-5`: chuyển cảnh trong đoạn tuyệt vọng (cảnh 5–8). `whoosh-3`: hook. `whoosh-14` và `whoosh-30`: các cảnh kể chuyện. `whoosh-18`: lúc Thoa xuất hiện và cảnh cuối.
+- `camera`: tiếng màn trập ở cảnh mở đầu, click to nhất trùng lúc khung hình chớp trắng.
 - `boom`: nổ đúng lúc chuyển sang cảnh 5 ("Cho đến một ngày…"), whoosh-5 dâng lên ngay trước tiếng nổ.
 - `nhac-kinh-di`: nhạc nền đoạn tuyệt vọng. Vào ở câu "Mỗi thứ nghe qua đều có lý.", cao trào rơi đúng lúc tin nhắn bị thu hồi, tắt dần sau câu "Rốt cuộc da mình đang bị gì?". Piano rút dần khi nhạc này vào.
 
