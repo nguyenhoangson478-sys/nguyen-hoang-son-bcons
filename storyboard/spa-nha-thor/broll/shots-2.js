@@ -19,34 +19,43 @@ function neonSign(x, y, text, col, size, flick = 1, rot = 0) {
 const flicker = (t, seed) => (Math.sin(t * 31 + seed * 7) > .92 || Math.sin(t * 7 + seed) > .97) ? .25 : 1;
 
 // ================= HỒI IV: THOA =================
-shot('24-muoi-nam', 3.1, (t, p) => {
-  setCam(0, 0, 1.04);
-  const sweep = (t * .55) % 1, spin = t * 900;
-  return `<rect width="${W}" height="${H}" fill="${lg([[0, '#2B2230'], [1, '#141019']])}"/>`
-    + L(.3, `<rect x="120" y="240" width="520" height="760" fill="#1B2A44"/>${glow(380, 620, 360, '#FF7AB8', .25)}${glow(300, 500, 300, '#6FC8FF', .25)}
-      ${Array.from({ length: 12 }, (_, i) => `<rect x="120" y="${250 + i * 62}" width="520" height="30" fill="#0E0B12" opacity=".75"/>`).join('')}
-      <circle cx="850" cy="420" r="110" fill="#F4ECE0"/><circle cx="850" cy="420" r="96" fill="#EDE2D2"/>
-      <line x1="850" y1="420" x2="${850 + 70 * Math.sin(spin / 57.3)}" y2="${420 - 70 * Math.cos(spin / 57.3)}" stroke="#2B2420" stroke-width="8" stroke-linecap="round"/>
-      <line x1="850" y1="420" x2="${850 + 50 * Math.sin(spin / 57.3 / 12)}" y2="${420 - 50 * Math.cos(spin / 57.3 / 12)}" stroke="#2B2420" stroke-width="12" stroke-linecap="round"/>`)
-    + L(.5, `<rect x="-100" y="1180" width="1300" height="900" fill="#221A22"/>
-      <path d="M80,1180 L1000,1180 L1060,1300 L20,1300 Z" fill="#EFE6DA"/><rect x="40" y="1300" width="1020" height="80" rx="20" fill="#CFC3B4"/>
-      ${beam(1080, 0, 200 + sweep * 800, 1300, 20, 200, '#FFE2B0', .35)}
-      ${[0, 1, 2, 3].map(i => bottle(700 + i * 70, 1178, .45, ['#E7C9BE', '#DDE6D6', '#F2E3D0', '#C9A45C'][i])).join('')}`)
-    + L(.9, figure(260, 1900, 1.15, { back: true, hair: 'bun', col: '#2F4A3F', dark: '#0B0A0F', rim: '#FF9AC8' }), 2);
-}, () => ({ tint: '#7A4A8A', tintA: .12, vig: .8, grain: .12 }));
+shot('24-den-tim-thoa', 3.1, (t, p) => {
+  setCam(0, 0, 1.02 + .06 * eio(p));
+  const step = eio(seq(t, 2.0, 3.1)), hes = Math.sin(t * 2.2) * 6 * (1 - step);
+  return `<rect width="${W}" height="${H}" fill="${lg([[0, '#0C1022'], [1, '#05060C']])}"/>`
+    + L(.25, `<g${blur(10)}>${skyline(41, 900, '#111629', '#FFC98A', .35, .9)}</g>`)
+    + L(.4, `<rect x="180" y="560" width="720" height="880" fill="#1A1614"/><rect x="220" y="700" width="640" height="740" fill="${lg([[0, '#FFD9A0'], [1, '#E7A96A']])}"/>
+      ${glow(540, 1050, 520, '#FFD9A0', .55)}<rect x="532" y="700" width="16" height="740" fill="#2B2420"/>
+      <rect x="260" y="600" width="560" height="90" rx="20" fill="#2F4A3F"/>${leafLogo(330, 645, .35)}${txt(380, 662, 'Spa Nhà Thor', 46, '#F7F0E6', 800)}
+      ${tree(290, 1440, .8)}${tree(800, 1440, .7)}`)
+    + L(.5, `<rect x="-100" y="1440" width="1300" height="600" fill="#0B0D14"/><rect x="220" y="1440" width="640" height="480" fill="${lg([[0, '#E7A96A', .45], [1, '#E7A96A', 0]])}"/>`
+      + rain(t, 70, 0, 0, 1080, 1920, 91, 1500, '#C9D8FF', .22) + Array.from({ length: 10 }, (_, i) => { const r = rng(500 + i), u = (t * 1.5 + r()) % 1; return `<ellipse cx="${r() * 1080}" cy="${1480 + r() * 400}" rx="${40 * u}" ry="${8 * u}" fill="none" stroke="#FFD9A0" stroke-opacity="${.5 * (1 - u)}" stroke-width="3"/>`; }).join(''))
+    + L(.9, `<g transform="translate(${540 + hes},${lerp(0, -40, step)}) scale(${lerp(1, .9, step)}) translate(-540,0)">${figure(540, 1880, 1.15, { back: true, col: '#3A4260', dark: '#07080C', rim: '#FFD9A0', walk: step * 1.2 })}
+      <path d="M300,930 C320,760 760,760 780,930 Z" fill="#DCE6F2" opacity=".28"/><path d="M300,930 C320,760 760,760 780,930" stroke="#EAF2FF" stroke-width="5" fill="none" opacity=".6"/><rect x="536" y="790" width="8" height="330" fill="#2B2420"/>${rain(t, 12, 320, 780, 440, 140, 93, 600, '#EAF2FF', .35, .5)}</g>`);
+}, () => ({ tint: '#3A4A7A', tintA: .12, vig: .82, grain: .12 }));
 
-shot('25-nhung-cau-chuyen', 3.4, (t, p) => {
-  setCam(0, 0, 1);
-  const msgs = ['Da em càng làm càng đỏ…', 'Em lỡ mua cả combo rồi…', 'Em không biết da mình bị gì…', 'Có cần làm tiếp không chị?', 'Chị ơi em sợ soi gương lắm', 'Em đã chi gần hết tiền học…', 'Sao em càng chăm càng tệ?', 'Em có nên dừng không ạ?'];
-  const r = rng(51); let s = `<rect width="${W}" height="${H}" fill="${rg([[0, '#1B1E2B'], [1, '#07080C']])}"/>`;
-  const cards = [];
-  for (let i = 0; i < 26; i++) { cards.push({ x: r() * 1400 - 160, y: r() * 2300 - 190, z0: r(), m: msgs[i % msgs.length], rot: r() * 16 - 8 }); }
-  cards.map(c => ({ ...c, z: (c.z0 + t * .22) % 1 })).sort((a, b) => a.z - b.z).forEach(c => {
-    const sc = .35 + c.z * 1.6, x = 540 + (c.x - 540) * sc, y = 960 + (c.y - 960) * sc, bl = Math.abs(c.z - .55) * 22, op = clamp(c.z * 3) * clamp((1 - c.z) * 4);
-    s += `<g transform="translate(${x},${y}) scale(${sc}) rotate(${c.rot})" opacity="${op.toFixed(2)}"${blur(bl)}><rect x="-230" y="-60" width="460" height="120" rx="36" fill="#F4F1EC"/>${txt(-200, 12, c.m, 28, '#2B2420', 500)}</g>`;
-  });
-  return s + glow(540, 960, 500, '#9FB8FF', .12);
-}, () => ({ tint: '#3A4A7A', tintA: .15, vig: .85, grain: .12 }));
+shot('25a-ke-chuyen', 1.9, (t, p) => {
+  setCam(0, 0, 1.05 + .05 * p);
+  const push = eo(seq(t, .4, 1.3)), sob = Math.sin(t * 8) * 5;
+  return `<rect width="${W}" height="${H}" fill="${lg([[0, '#3A2A22'], [1, '#1E1510']])}"/>`
+    + L(.25, glow(820, 500, 420, '#FFD9A0', .7) + `<rect x="760" y="560" width="120" height="60" rx="10" fill="#E7C9A0" opacity=".8"/>`, 14)
+    + L(.5, `<g transform="translate(0,${sob})">${faceFront(640, 820, .95, { expr: 'cry', acne: 10, red: .7, top: '#5A6480' })}</g>
+      <rect x="-100" y="1240" width="1300" height="800" fill="#6E5440"/><rect x="-100" y="1240" width="1300" height="18" fill="#8A6A4F"/>
+      <g transform="translate(${lerp(420, 620, push)},1250)"><rect x="-110" y="-120" width="220" height="130" rx="12" fill="#F4EEE4"/><path d="M-40,-120 C-30,-190 30,-190 40,-120" fill="#FFFFFF"/></g>
+      ${handDetail(lerp(300, 480, push), 1440, 70, .85, { sleeve: '#2F4A3F', curl: .1 })}`)
+    + L(1.3, `<ellipse cx="160" cy="900" rx="220" ry="260" fill="${P.hair}"/><circle cx="170" cy="640" r="90" fill="${P.hair}"/><path d="M-200,1920 C-180,1400 0,1200 180,1180 C320,1170 420,1300 440,1920 Z" fill="#2F4A3F"/>`, 22);
+}, () => ({ tint: '#B98A4A', tintA: .1, vig: .75, grain: .11 }));
+
+shot('25b-nam-tay', 1.5, (t, p) => {
+  setCam(0, 300, 1.18 + .04 * p);
+  const come = eo(seq(t, .15, .8));
+  return `<rect width="${W}" height="${H}" fill="${lg([[0, '#4A3628'], [1, '#2A1E16']])}"/>`
+    + L(.3, glow(600, 700, 600, '#FFD9A0', .45), 16)
+    + L(.6, `<rect x="-100" y="600" width="1300" height="1500" fill="${lg([[0, '#7A5E46'], [1, '#5A4434']])}"/>
+      ${handDetail(400, 1640, 48, 1.05, { curl: .55, sleeve: '#5A6480', tremble: 1.8 * (1 - come * .7) })}${handDetail(700, 1640, -48, 1.05, { curl: .55, sleeve: '#5A6480', flip: true, tremble: 1.8 * (1 - come * .7) })}`)
+    + L(.7, handDetail(lerp(1250, 800, come), lerp(900, 1300, come), -120, 1.05, { sleeve: '#2F4A3F', curl: .2 }))
+    + L(.4, glow(560, 1150, 260, '#FFE6C0', .25 * come));
+}, () => ({ tint: '#B98A4A', tintA: .1, vig: .78, grain: .11 }));
 
 function saigonNight(t, o = {}) {
   return `<rect width="${W}" height="${H}" fill="${lg([[0, '#0B0E24'], [.6, '#2A1E48'], [1, '#43285A']])}"/>

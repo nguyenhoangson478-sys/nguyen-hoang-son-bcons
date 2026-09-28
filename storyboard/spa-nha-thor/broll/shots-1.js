@@ -128,7 +128,7 @@ shot('04a-phong-ktx', 2.2, (t, p) => {
     + L(.7, `<rect x="560" y="1180" width="560" height="40" fill="#8A6A4F"/><rect x="580" y="1220" width="30" height="700" fill="#6E5440"/><rect x="1060" y="1220" width="30" height="700" fill="#6E5440"/>
       <circle cx="930" cy="1080" r="80" fill="#E8DCCD" stroke="#B59C82" stroke-width="12"/><rect x="920" y="1150" width="20" height="40" fill="#B59C82"/>
       <rect x="650" y="1110" width="70" height="70" rx="10" fill="#C98E74"/><circle cx="685" cy="1080" r="50" fill="#8DA68A"/>`)
-    + L(.85, figure(760, 1560, .78, { back: true, col: '#EADFD3' }))
+    + L(.85, sitSide(560, 1500, .82, { desk: false, head: 'mid' }))
     + L(1.4, `<rect x="-60" y="1300" width="300" height="700" rx="30" fill="#5A4636"/><path d="M-60,1300 L240,1300 L240,1340 L-60,1340 Z" fill="#7A6250"/>`, 20);
 }, () => ({ tint: '#F2B866', tintA: .12, leak: '#FFE0B0', leakA: .35, vig: .5, grain: .08 }));
 
@@ -251,20 +251,18 @@ shot('13-den-chap', 2.5, (t, p) => {
   return bathroomNight(t, f) + `<g opacity="${.2 + .8 * f}">${towel(0)}</g>` + `<rect width="${W}" height="${H}" fill="#000" opacity="${t < .35 ? 1 : .55 * (1 - f)}"/>`;
 }, () => ({ tint: '#1C4250', tintA: .2, vig: .85, grain: .14 }));
 
-shot('14-khan-phu-guong', 2.7, (t, p) => {
-  const [hx, hy] = hand_held(t, .5); setCam(hx, hy, 1 + .08 * eio(p));
-  const f = .85 + .15 * Math.sin(t * 17) * Math.sin(t * 5), grip = ease(seq(t, .6, 2));
+shot('14-quay-di', 2.7, (t, p) => {
+  const [hx, hy] = hand_held(t, .5); setCam(hx, hy, 1.04 + .06 * eio(p));
+  const f = .85 + .15 * Math.sin(t * 17) * Math.sin(t * 5), turn = eio(seq(t, .8, 1.5)), cover = eo(seq(t, 1.3, 2.1));
   return L(.3, bathroomNight(t, f))
-    + L(.4, `<g${clip('<rect x="560" y="420" width="420" height="640" rx="14"/>')}><g transform="translate(640,1010) rotate(-8)"><ellipse cx="0" cy="0" rx="150" ry="170" fill="#C99A86"/>${glow(-30, 30, 90, '#C2574A', .6)}
-      <circle cx="-50" cy="10" r="9" fill="#9E2F25"/><circle cx="-10" cy="50" r="8" fill="#9E2F25"/><circle cx="-80" cy="60" r="7" fill="#9E2F25"/><circle cx="20" cy="0" r="7" fill="#9E2F25"/>
-      <path d="M-70,-60 q25,-12 50,2" stroke="#1A1210" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <path d="M-150,-120 C-160,-240 120,-260 150,-110 L160,40 C120,-80 20,-130 -40,-110 C-90,-100 -130,-60 -150,20 Z" fill="#120D0C"/></g>
-      <rect x="560" y="420" width="420" height="640" fill="#0B1418" opacity=".35"/></g>${towel(grip)}
+    + L(.45, `<g${clip('<rect x="560" y="420" width="420" height="640" rx="14"/>')}><rect x="560" y="420" width="420" height="640" fill="#2A3A42"/>
+        <g opacity="${1 - turn}" transform="translate(${60 * turn},0)">${faceFront(770, 800, .78, { spots: [[-110, 40], [100, 30], [-60, 120], [90, 110], [-120, 100], [40, -150]], red: .7, expr: 'sad', look: 6 })}</g>
+        <g opacity="${turn}" transform="translate(${-40 * (1 - turn)},0)"><g transform="translate(800,820) scale(-.62,.62)">${faceProfile(0, 0, 1, { acne: 8, red: .6 })}</g></g>
+        <rect x="560" y="420" width="420" height="640" fill="#0B1418" opacity=".3"/></g>
       <rect x="0" y="1170" width="1080" height="800" fill="#0E171B"/><rect x="0" y="1170" width="1080" height="14" fill="#9CC3CF" opacity=".25"/>`)
-    + L(1.3, `<path d="M430,1560 C470,1360 540,1130 610,900" stroke="#1B252A" stroke-width="110" stroke-linecap="round" fill="none"/>
-      ${hand(612, 960, 10, .75, 'hold', { skin: '#8F7666', sh: '#6D5649' })}
-      <path d="M-120,2000 L-120,1560 C-60,1380 120,1330 300,1360 C420,1380 520,1470 560,1600 L620,2000 Z" fill="#161F24"/>
-      <ellipse cx="250" cy="1330" rx="300" ry="330" fill="#07090B"/><path d="M60,1040 C160,960 360,960 470,1060" stroke="#7FC4D6" stroke-opacity=".55" stroke-width="12" fill="none"/>`, 12);
+    + L(.45, `<g opacity="${cover}">${handDetail(700, 1230 - 180 * cover, -20, .55, { skin: '#C99A86', sh: '#8E6A5A', tremble: 2 })}</g>`)
+    + L(1.3, `<ellipse cx="${230 - 40 * turn}" cy="1330" rx="300" ry="330" fill="#07090B"/><path d="M-120,2000 L-120,1560 C-60,1380 120,1330 300,1360 C420,1380 520,1470 560,1600 L620,2000 Z" fill="#161F24"/>
+      <path d="M40,1040 C140,960 340,960 450,1060" stroke="#7FC4D6" stroke-opacity=".55" stroke-width="12" fill="none"/>`, 12);
 }, () => ({ tint: '#1C4250', tintA: .14, vig: .8, grain: .12 }));
 
 function chatScreen(w, h, t, typed, recalled) {
@@ -300,12 +298,13 @@ shot('17-mun-day', 1.6, (t, p) => {
     + `<rect width="${W}" height="${H}" fill="${lg([[0, '#000', 0], [.55, '#000', 0], [1, '#000', .7]], 0, 0, 1, 0)}"/>`;
 }, () => ({ tint: '#3A5566', tintA: .2, vig: .85, grain: .13, lift: .04 }));
 
-shot('18-cham-ma', 1.4, (t, p) => {
-  setCam(-40, 60, 1.35 + .05 * p);
+shot('18-bat-khoc', 1.4, (t, p) => {
+  setCam(-20, 40, 1.28 + .08 * p);
+  const shake = Math.sin(t * 11) * 5;
   return `<rect width="${W}" height="${H}" fill="#120E0E"/>`
-    + L(.6, faceFront(620, 820, 1.7, { acne: 16, red: .95, expr: 'sad', look: -12 }))
-    + L(1, hand(350, 1290, 12, 1.25, 'open', { sleeve: '#3A3F48', tremble: 3, t }), 1);
-}, () => ({ tint: '#5A2A2A', tintA: .14, vig: .85, grain: .13 }));
+    + L(.6, `<g transform="translate(0,${shake})">${faceFront(620, 820, 1.7, { acne: 16, red: .95, expr: 'cry' })}</g>`)
+    + L(1, handDetail(330, 1360, 14, 1.25, { sleeve: '#3A3F48', tremble: 2.5, curl: .15 }), 1);
+}, () => ({ tint: '#5A2A2A', tintA: .14, vig: .88, grain: .13 }));
 
 shot('19-so-du', 3.4, (t, p) => {
   setCam(0, 0, 1.06 + .04 * p);
@@ -352,9 +351,20 @@ shot('22-khung-ngam', 2.9, (t, p) => {
     + hud + `<rect width="${W}" height="${H}" fill="#000" opacity="${shut > 0 && shut < 1 ? .9 : 0}"/><rect width="${W}" height="${H}" fill="#fff" opacity="${flash * .85}"/>`;
 }, () => ({ tint: '#7A8896', tintA: .3, vig: .55, grain: .1 }));
 
-shot('23-dem-mua', 3.5, (t, p) => {
-  setCam(0, 20 * p, 1.02 + .08 * eio(p));
-  const ph = t > 1.2 && t < 2.4 ? 1 : .35;
+shot('23a-om-mat', 1.8, (t, p) => {
+  setCam(0, 0, 1.08 + .05 * p);
+  const sob = Math.sin(t * 9) * 7 + Math.sin(t * 4.3) * 4;
+  return `<rect width="${W}" height="${H}" fill="${lg([[0, '#101630'], [1, '#05070E']])}"/>`
+    + L(.3, `<g${blur(20)}>${bokeh([[200, 400, 90, '#6E86C4', .5], [880, 300, 70, '#9CC8FF', .4]])}</g>` + rain(t, 30, 0, 0, 1080, 900, 71, 1400, '#9FB3E0', .12))
+    + L(.6, `<g transform="translate(0,${sob})">${faceFront(540, 860, 1.25, { expr: 'cry', acne: 12, red: .8, top: '#3A4260' })}
+      ${handDetail(430, 1180, 12, 1.05, { curl: .2, skin: '#E2B8A0', sh: '#A67A66' })}${handDetail(650, 1180, -12, 1.05, { curl: .2, skin: '#E2B8A0', sh: '#A67A66', flip: true })}</g>
+      <path d="M140,1920 C160,1640 300,1520 430,1560 C520,1590 560,1700 560,1920 Z" fill="#1E2440"/><path d="M520,1920 C520,1700 560,1590 650,1560 C780,1520 920,1640 940,1920 Z" fill="#1E2440"/>`)
+    + L(.6, `<path d="M300,560 C380,440 700,440 780,560" stroke="#8FB4FF" stroke-width="8" fill="none" opacity=".5"/>`);
+}, () => ({ tint: '#2A3A78', tintA: .2, vig: .85, grain: .13 }));
+
+shot('23b-dem-mua', 1.7, (t, p) => {
+  setCam(0, 20 * p, 1.02 + .06 * eio(p));
+  const ph = t > .5 && t < 1.3 ? 1 : .35;
   return L(.3, nightBedroom(t)) + L(.6, curledGirl(t, 2.2))
     + L(.7, glow(790, 1480, 300, '#DDEBFF', .5 * ph) + `<g transform="translate(790,1480) rotate(-12)"><rect x="-70" y="-26" width="140" height="52" rx="10" fill="#EAF2FF" opacity="${.4 + .6 * ph}"/><rect x="-58" y="-14" width="80" height="6" rx="3" fill="#9FB3D6"/><rect x="-58" y="0" width="110" height="6" rx="3" fill="#9FB3D6"/></g>`);
 }, () => ({ tint: '#2A3A78', tintA: .15, vig: .8, grain: .12 }));

@@ -1,7 +1,7 @@
 # Spa Nhà Thor: phân tích câu chuyện và kịch bản phân cảnh B-roll điện ảnh
 
 Video B-roll 2D, dọc 9:16, phủ kín màn hình, không phụ đề, dài 2:43 (khớp nhịp lời kể).
-Có 52 cú máy, trung bình 3,1 giây một cú. Anh tự chọn đoạn nào ghép với phần Thoa ngồi nói.
+Bản dựng có 63 cú máy, trung bình 2,6 giây một cú (xem mục 5). Anh tự chọn đoạn nào ghép với phần Thoa ngồi nói.
 
 ---
 
@@ -97,22 +97,24 @@ Cột "Lời" là câu Thoa nói ở đoạn đó.
 | # | Thời gian | Lời | Hình ảnh | Máy quay |
 |---|---|---|---|---|
 | 13 | 0:35.8–0:38.3 | cho đến một ngày… | **Màn hình đen đúng tiếng boom**, bóng đèn phòng tắm chập chờn bật lên | Tĩnh |
-| 14 | 0:38.3–0:41.0 | không còn dám soi gương | Khung A: khăn phủ gương, tay níu mép khăn | Đẩy chậm, đèn chập chờn |
+| 14 | 0:38.3–0:41.0 | không còn dám soi gương | Cô bé nhìn mình trong gương rồi **quay mặt đi**, tay run che má | Đẩy chậm, đèn chập chờn |
 | 15 | 0:41.0–0:43.2 | (lặng) | Cận màn hình chat: gõ "Chị ơi, da em dạo này…", ngón tay ngập ngừng | Cận |
 | 16 | 0:43.2–0:45.4 | (lặng) | "Tin nhắn đã thu hồi"; một giọt nước mắt rơi lên màn hình | Cận, giọt nước quay chậm |
 | 17 | 0:45.4–0:47.0 | mụn nhiều hơn | Cận nghiêng má dưới ánh đèn gắt: mụn dày | Đẩy |
-| 18 | 0:47.0–0:48.4 | da đỏ hơn | Ngón tay run chạm má đỏ | Cận |
+| 18 | 0:47.0–0:48.4 | da đỏ hơn | **Bật khóc**: mắt nhắm chặt, nước mắt chảy dòng, tay run áp má | Cận, rung |
 | 19 | 0:48.4–0:51.8 | số tiền… nhiều hơn rất nhiều | App ngân hàng: số dư tụt nhanh, danh sách chuyển khoản "Spa" chạy | Cận màn hình |
 | 20 | 0:51.8–0:56.0 | so với số tiền ban đầu định chi | Nhìn từ trên xuống: phong bì "Tiền chăm da" mỏng giữa đống hoá đơn và chai lọ rỗng | Máy quay nâng dần lên |
 | 21 | 0:56.0–0:59.5 | điều đau nhất không phải là mất tiền | **Ngày tốt nghiệp**: bạn bè tạo dáng chụp ảnh nhóm, cô bé đeo khẩu trang lùi ra khỏi khung, nhoè | Lia theo cô bé |
 | 22 | 0:59.5–1:02.4 | vẫn không biết | Qua khung ngắm máy ảnh: nhóm bạn cười, một khoảng trống; tiếng màn trập | Tĩnh, nháy flash |
-| 23 | 1:02.4–1:05.9 | rốt cuộc da mình đang bị gì? | Khung B: đêm mưa, ôm gối trên giường | Đẩy rất chậm, mưa |
+| 23a | 1:02.4–1:04.2 | rốt cuộc da mình đang bị gì? | **Ôm mặt khóc**, vai run, ánh xanh đêm mưa | Cận |
+| 23b | 1:04.2–1:05.9 | (tiếp) | Khung B: đêm mưa, ôm gối trên giường | Đẩy rất chậm, mưa |
 
 ### Hồi IV: Thoa
 | # | Thời gian | Lời | Hình ảnh | Máy quay |
 |---|---|---|---|---|
-| 24 | 1:05.9–1:09.0 | mười năm làm nghề | Phòng spa Sài Gòn về đêm: vệt nắng quét qua giường như tua nhanh thời gian, dụng cụ ngay ngắn | Tua nhanh |
-| 25 | 1:09.0–1:12.4 | nghe và chứng kiến quá nhiều câu chuyện | Hàng chục màn hình tin nhắn xếp lớp trôi trong bóng tối | Trôi xuyên qua |
+| 24 | 1:05.9–1:09.0 | mười năm làm nghề | **Cô bé tìm đến Thoa**: đêm mưa, cầm dù đứng ngập ngừng trước cửa Spa Nhà Thor sáng đèn, rồi bước vào | Đẩy chậm |
+| 25a | 1:09.0–1:10.9 | nghe và chứng kiến… | Cô bé khóc kể chuyện; tay Thoa (tiền cảnh nhoè) đẩy hộp khăn giấy sang | Qua vai |
+| 25b | 1:10.9–1:12.4 | …quá nhiều câu chuyện | Cận hai bàn tay run đan nhau; tay Thoa đặt lên nắm lấy | Cận |
 | 26 | 1:12.4–1:16.8 | có phải người ta thiếu tiền đâu | Bóng Thoa bên cửa kính cao tầng, neon Sài Gòn phản chiếu lên người | Đẩy chậm |
 | 27 | 1:16.8–1:20.6 | thiếu một người nói thật | Tay Thoa gập cuốn catalogue sản phẩm lại | Cận |
 | 28 | 1:20.6–1:23.0 | cái này chưa cần làm | Danh sách liệu trình: bút gạch từng dòng | Cận từ trên xuống |
@@ -161,7 +163,7 @@ Cột "Lời" là câu Thoa nói ở đoạn đó.
 
 ## 5. Bản dựng thực tế: mốc thời gian để tìm cú máy trong Premiere
 
-Các cú dài hơn 4 giây đã được tách đôi (4, 7, 26, 31, 38, 43, 47, 49, 52), nên tổng là **61 cú**.
+Các cú dài hơn 4 giây đã được tách đôi (4, 7, 26, 31, 38, 43, 47, 49, 52), nên tổng là **63 cú**.
 Có ba bản video:
 - `spa-nha-thor-broll-phu-de.mp4`: **có phụ đề** lời kể (chữ hiện dần theo nhịp đọc, từ nhấn tô vàng) và nhạc.
 - `spa-nha-thor-broll-co-nhac.mp4`: không phụ đề, có nhạc nền, nhạc kinh dị, tiếng boom lúc màn hình đen, tiếng màn trập.
@@ -187,49 +189,51 @@ Phụ đề lấy từ `broll/lines.js`. Khi có giọng Thoa thật, chỉ cầ
 | 13 | 0:30.5 | 2.4s | `11-the-hen` |
 | 14 | 0:32.9 | 2.9s | `12-ky-hoa-don` |
 | 15 | 0:35.8 | 2.5s | `13-den-chap` |
-| 16 | 0:38.3 | 2.7s | `14-khan-phu-guong` |
+| 16 | 0:38.3 | 2.7s | `14-quay-di` |
 | 17 | 0:41.0 | 2.2s | `15-go-tin-nhan` |
 | 18 | 0:43.2 | 2.2s | `16-thu-hoi` |
 | 19 | 0:45.4 | 1.6s | `17-mun-day` |
-| 20 | 0:47.0 | 1.4s | `18-cham-ma` |
+| 20 | 0:47.0 | 1.4s | `18-bat-khoc` |
 | 21 | 0:48.4 | 3.4s | `19-so-du` |
 | 22 | 0:51.8 | 4.2s | `20-phong-bi` |
 | 23 | 0:56.0 | 3.5s | `21-tot-nghiep-lui-ra` |
 | 24 | 0:59.5 | 2.9s | `22-khung-ngam` |
-| 25 | 1:02.4 | 3.5s | `23-dem-mua` |
-| 26 | 1:05.9 | 3.1s | `24-muoi-nam` |
-| 27 | 1:09.0 | 3.4s | `25-nhung-cau-chuyen` |
-| 28 | 1:12.4 | 2.2s | `26a-thoa-cua-kinh` |
-| 29 | 1:14.6 | 2.2s | `26b-phan-chieu-neon` |
-| 30 | 1:16.8 | 3.8s | `27-gap-catalogue` |
-| 31 | 1:20.6 | 2.4s | `28-gach-danh-sach` |
-| 32 | 1:23.0 | 1.9s | `29-cat-chai` |
-| 33 | 1:24.9 | 2.1s | `30-ly-nuoc` |
-| 34 | 1:27.0 | 2.2s | `31a-nang-som` |
-| 35 | 1:29.2 | 2.2s | `31b-ngu-yen` |
-| 36 | 1:31.4 | 2.7s | `32-roi-sai-gon` |
-| 37 | 1:34.1 | 2.7s | `33-cua-so-xe` |
-| 38 | 1:36.8 | 2.3s | `34-lang-dai-hoc` |
-| 39 | 1:39.1 | 1.5s | `35-bai-co` |
-| 40 | 1:40.6 | 2.2s | `36-vi-mong` |
-| 41 | 1:42.8 | 2.5s | `37-quang-cao` |
-| 42 | 1:45.3 | 2.8s | `38a-mat-phan-chieu` |
-| 43 | 1:48.1 | 2.9s | `38b-so-guong` |
-| 44 | 1:51.0 | 3.7s | `39-den-vong` |
-| 45 | 1:54.7 | 2.5s | `40-phong-spa-nho` |
-| 46 | 1:57.2 | 3.8s | `41-den-soi-da` |
-| 47 | 2:01.0 | 1.8s | `42-phep-mau` |
-| 48 | 2:02.8 | 2.5s | `43a-so-tay` |
-| 49 | 2:05.3 | 2.5s | `43b-doc-thanh-phan` |
-| 50 | 2:07.8 | 2.9s | `44-thu-co-tay` |
-| 51 | 2:10.7 | 3.3s | `45-keo-khan` |
-| 52 | 2:14.0 | 2.6s | `46-buoc-vao-spa` |
-| 53 | 2:16.6 | 2.7s | `47a-ngoi-thang` |
-| 54 | 2:19.3 | 2.6s | `47b-lat-so` |
-| 55 | 2:21.9 | 2.9s | `48-anh-mat` |
-| 56 | 2:24.8 | 2.6s | `49a-day-lai` |
-| 57 | 2:27.4 | 2.5s | `49b-buoc-ra-nang` |
-| 58 | 2:29.9 | 4.0s | `50-vao-khung` |
-| 59 | 2:33.9 | 3.1s | `51-anh-tron-ven` |
-| 60 | 2:37.0 | 3.0s | `52a-hoang-hon` |
-| 61 | 2:40.0 | 3.2s | `52b-bien-la` |
+| 25 | 1:02.4 | 1.8s | `23a-om-mat` |
+| 26 | 1:04.2 | 1.7s | `23b-dem-mua` |
+| 27 | 1:05.9 | 3.1s | `24-den-tim-thoa` |
+| 28 | 1:09.0 | 1.9s | `25a-ke-chuyen` |
+| 29 | 1:10.9 | 1.5s | `25b-nam-tay` |
+| 30 | 1:12.4 | 2.2s | `26a-thoa-cua-kinh` |
+| 31 | 1:14.6 | 2.2s | `26b-phan-chieu-neon` |
+| 32 | 1:16.8 | 3.8s | `27-gap-catalogue` |
+| 33 | 1:20.6 | 2.4s | `28-gach-danh-sach` |
+| 34 | 1:23.0 | 1.9s | `29-cat-chai` |
+| 35 | 1:24.9 | 2.1s | `30-ly-nuoc` |
+| 36 | 1:27.0 | 2.2s | `31a-nang-som` |
+| 37 | 1:29.2 | 2.2s | `31b-ngu-yen` |
+| 38 | 1:31.4 | 2.7s | `32-roi-sai-gon` |
+| 39 | 1:34.1 | 2.7s | `33-cua-so-xe` |
+| 40 | 1:36.8 | 2.3s | `34-lang-dai-hoc` |
+| 41 | 1:39.1 | 1.5s | `35-bai-co` |
+| 42 | 1:40.6 | 2.2s | `36-vi-mong` |
+| 43 | 1:42.8 | 2.5s | `37-quang-cao` |
+| 44 | 1:45.3 | 2.8s | `38a-mat-phan-chieu` |
+| 45 | 1:48.1 | 2.9s | `38b-so-guong` |
+| 46 | 1:51.0 | 3.7s | `39-den-vong` |
+| 47 | 1:54.7 | 2.5s | `40-phong-spa-nho` |
+| 48 | 1:57.2 | 3.8s | `41-den-soi-da` |
+| 49 | 2:01.0 | 1.8s | `42-phep-mau` |
+| 50 | 2:02.8 | 2.5s | `43a-so-tay` |
+| 51 | 2:05.3 | 2.5s | `43b-doc-thanh-phan` |
+| 52 | 2:07.8 | 2.9s | `44-thu-co-tay` |
+| 53 | 2:10.7 | 3.3s | `45-keo-khan` |
+| 54 | 2:14.0 | 2.6s | `46-buoc-vao-spa` |
+| 55 | 2:16.6 | 2.7s | `47a-ngoi-thang` |
+| 56 | 2:19.3 | 2.6s | `47b-lat-so` |
+| 57 | 2:21.9 | 2.9s | `48-anh-mat` |
+| 58 | 2:24.8 | 2.6s | `49a-day-lai` |
+| 59 | 2:27.4 | 2.5s | `49b-buoc-ra-nang` |
+| 60 | 2:29.9 | 4.0s | `50-vao-khung` |
+| 61 | 2:33.9 | 3.1s | `51-anh-tron-ven` |
+| 62 | 2:37.0 | 3.0s | `52a-hoang-hon` |
+| 63 | 2:40.0 | 3.2s | `52b-bien-la` |

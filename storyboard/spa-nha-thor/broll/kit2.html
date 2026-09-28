@@ -1,0 +1,8 @@
+<!doctype html><html><head><meta charset="utf-8"><link href="../src/fonts.css" rel="stylesheet"><style>body{margin:0;background:#333}</style></head><body>
+<div id="s"></div><script src="cine.js"></script><script>
+resetDefs(); NOW=1.3;
+const c = `<rect width="2160" height="1920" fill="#E9DDD0"/>${faceFront(360,520,.85,{expr:'cry',acne:10,red:.8})}
+ ${handDetail(250,1600,0,1.2,{sleeve:'#556'})}${handDetail(560,1600,0,1.2,{curl:.6})}${handDetail(860,1600,-20,1.2,{spread:1})}
+ ${sitSide(1300,1300,1,{})}${sitSide(1900,1300,.8,{head:'up',desk:false})}`;
+document.getElementById('s').innerHTML=`<svg width="2160" height="1920" viewBox="0 0 2160 1920"><defs>${DEFS.join('')}</defs>${c}</svg>`;
+</script></body></html>

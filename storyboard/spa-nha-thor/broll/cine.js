@@ -150,6 +150,10 @@ function faceFront(x, y, s, o = {}) {
   const sway = al * Math.sin(NOW * 1.05 + sd) * 1.4, breath = al * Math.sin(NOW * 1.7 + sd) * 4, hs = al * Math.sin(NOW * 1.3 + sd) * 1.3;
   const skinG = lg([[0, lightX < 0 ? '#F6D3BD' : P.skinSh], [.5, P.skin], [1, lightX < 0 ? P.skinSh : '#F6D3BD']], 0, 0, 1, 0);
   const eye = (ex, side) => {
+    if (expr === 'cry') return `<path d="M${ex - 54},-2 C${ex - 28},${14} ${ex + 28},${14} ${ex + 54},-2" stroke="#1A1210" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M${ex - 46},6 C${ex - 20},${22} ${ex + 20},${22} ${ex + 46},6" stroke="#E7F3FA" stroke-width="4" fill="none" opacity=".8"/>
+      <path d="M${ex - 50},-12 C${ex - 25},-24 ${ex + 25},-24 ${ex + 50},-12" stroke="#B98672" stroke-width="4" fill="none" opacity=".6"/>
+      ${[-30, -12, 8, 28].map(dx => `<path d="M${ex + dx},${8} l${dx * .15},10" stroke="#1A1210" stroke-width="4" stroke-linecap="round"/>`).join('')}`;
     if (closed > .85) return `<path d="M${ex - 52},${-6} C${ex - 25},${10} ${ex + 25},${10} ${ex + 52},${-6}" stroke="#1A1210" stroke-width="7" fill="none" stroke-linecap="round"/>`;
     const lid = closed * 22;
     return `<g>
@@ -165,9 +169,11 @@ function faceFront(x, y, s, o = {}) {
       <path d="M${ex - 40},16 C${ex - 15},24 ${ex + 15},24 ${ex + 40},14" stroke="#B98672" stroke-width="3" fill="none" opacity=".6"/>
     </g>`;
   };
-  const browY = expr === 'sad' || expr === 'cry' ? [[-140, -64], [-40, -84]] : [[-140, -76], [-40, -84]];
+  const browY = expr === 'cry' ? [[-140, -54], [-36, -96]] : expr === 'sad' ? [[-140, -64], [-40, -84]] : [[-140, -76], [-40, -84]];
   const brows = [-1, 1].map(sd => `<path d="M${sd * -browY[0][0]},${browY[0][1]} Q${sd * 90},${(browY[0][1] + browY[1][1]) / 2 - 12} ${sd * -browY[1][0]},${browY[1][1]}" stroke="#2A1C16" stroke-width="12" fill="none" stroke-linecap="round" opacity=".85"/>`).join('');
-  const mouth = expr === 'smile' ? `<path d="M-46,120 C-20,142 20,142 46,120 C22,150 -22,150 -46,120 Z" fill="${P.lip}"/><path d="M-46,120 C-20,136 20,136 46,120" stroke="#8E4A42" stroke-width="4" fill="none"/>`
+  const wob = Math.sin(NOW * 13) * 6;
+  const mouth = expr === 'cry' ? `<path d="M-50,${136 - wob * .3} C-24,${108 + wob} 24,${108 + wob} 50,${136 - wob * .3} C28,${172 + wob} -28,${172 + wob} -50,${136 - wob * .3} Z" fill="#6E2A26"/><path d="M-34,${122 + wob * .6} C-12,${116 + wob} 12,${116 + wob} 34,${122 + wob * .6}" stroke="#F4EDE8" stroke-width="8" fill="none" opacity=".85"/><path d="M-50,${136 - wob * .3} C-24,${108 + wob} 24,${108 + wob} 50,${136 - wob * .3}" stroke="${P.lip}" stroke-width="9" fill="none"/>`
+    : expr === 'smile' ? `<path d="M-46,120 C-20,142 20,142 46,120 C22,150 -22,150 -46,120 Z" fill="${P.lip}"/><path d="M-46,120 C-20,136 20,136 46,120" stroke="#8E4A42" stroke-width="4" fill="none"/>`
     : expr === 'sad' || expr === 'cry' ? `<path d="M-38,134 C-20,120 20,120 38,134 C20,146 -20,146 -38,134 Z" fill="${P.lip}"/><path d="M-38,134 C-20,124 20,124 38,134" stroke="#8E4A42" stroke-width="4" fill="none"/>`
       : `<path d="M-40,124 C-20,114 -5,120 0,121 C5,120 20,114 40,124 C20,142 -20,142 -40,124 Z" fill="${P.lip}"/><path d="M-40,124 C-15,128 15,128 40,124" stroke="#8E4A42" stroke-width="4" fill="none"/>`;
   const r = rng(7); let spots = '';
@@ -187,6 +193,7 @@ function faceFront(x, y, s, o = {}) {
     ${spots}
     <path d="M-8,-20 C-12,20 -16,50 -26,68 C-12,80 12,80 26,68" stroke="${P.skinDeep}" stroke-width="4" fill="none" opacity=".45" stroke-linecap="round"/>
     ${eye(-88, -1)}${eye(88, 1)}${brows}${mouth}
+    ${expr === 'cry' ? [-1, 1].map(sd => { const st = `M${sd * 70},18 C${sd * 80},70 ${sd * 96},130 ${sd * 110},210`; let d = ''; for (let k = 0; k < 3; k++) { const u = ((NOW * .7 + k / 3 + (sd > 0 ? .15 : 0)) % 1); d += `<ellipse cx="${sd * (70 + 40 * u)}" cy="${18 + 190 * u}" rx="7" ry="10" fill="#DCEFF9" opacity="${.9 * (1 - u)}"/>`; } return `<path d="${st}" stroke="#E6F3FA" stroke-width="10" fill="none" opacity=".5" stroke-linecap="round"/><path d="${st}" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/>${d}`; }).join('') + glow(0, 60, 40, '#E0706A', .45) : ''}
     ${tear ? `<path d="M${95},${22 + tear * 120} q-10,22 0,30 q10,-8 0,-30z" fill="#CFE6F5" opacity=".9"/><path d="M95,20 L95,${22 + tear * 120}" stroke="#E8F4FB" stroke-width="5" opacity=".45"/>` : ''}
     <g transform="rotate(${hs} 0 -280)"><path d="M-6,-296 C-150,-296 -238,-196 -232,-30 C-228,120 -252,270 -268,440 L-305,440 C-296,230 -300,-40 -262,-170 C-220,-290 -90,-322 -6,-296 Z" fill="${hair}"/>
     <path d="M6,-296 C150,-296 238,-196 232,-30 C228,120 252,270 268,440 L305,440 C296,230 300,-40 262,-170 C220,-290 90,-322 6,-296 Z" fill="${hair}"/>
@@ -286,4 +293,51 @@ function gradCap(x, y, s, rot = 0, tilt = 0, swing = 0) {
 function tree(x, y, s) {
   return `<g transform="translate(${x},${y}) scale(${s})"><path d="M-60,0 L-50,-120 L50,-120 L60,0 Z" fill="#C98E74"/><rect x="-6" y="-260" width="12" height="150" fill="#6B5040"/>
     <circle cx="0" cy="-300" r="90" fill="#8DA68A"/><circle cx="-60" cy="-240" r="60" fill="#7C9879"/><circle cx="60" cy="-250" r="64" fill="#9BB596"/></g>`;
+}
+
+// ---------- bàn tay chi tiết (mu bàn tay, cận cảnh) ----------
+// Cổ tay ở (0,0), ngón hướng lên (-y). curl: 0 duỗi → 1 co; spread: xoè; tremble: run
+function handDetail(x, y, rot, s, o = {}) {
+  const { curl = 0, spread = 0, sleeve = null, skin = P.skin, sh = P.skinSh, flip = false, tremble = 0, thumb = 1 } = o;
+  if (!o.still) { const sd = Math.abs(Math.round(x + y)) % 11; x += Math.sin(NOW * 1.3 + sd) * 3; y += Math.sin(NOW * 1.1 + sd) * 2; }
+  const tr = tremble ? Math.sin(NOW * 34) * tremble : 0;
+  const skinG = lg([[0, sh], [.25, skin], [.6, '#F7D8C4'], [1, sh]], 0, 0, 1, 0);
+  const finger = (bx, w, len, ang) => {
+    const L1 = len * (1 - curl * .55), bend = curl * 70;
+    return `<g transform="translate(${bx},-168) rotate(${ang + tr})">
+      <path d="M${-w / 2},6 C${-w / 2},${-L1 * .5} ${-w * .44},${-L1 * .9} ${-w * .36},${-L1 + w * .3} C${-w * .3},${-L1 - w * .12} ${w * .3},${-L1 - w * .12} ${w * .36},${-L1 + w * .3} C${w * .44},${-L1 * .9} ${w / 2},${-L1 * .5} ${w / 2},6 Z" fill="${skinG}" transform="skewX(${-bend * .1})"/>
+      <ellipse cx="0" cy="-2" rx="${w * .42}" ry="${w * .3}" fill="#FBE3D4" opacity=".55"/>
+      <path d="M${-w * .3},${-L1 * .38} q${w * .3},${w * .16} ${w * .6},0 M${-w * .26},${-L1 * .68} q${w * .26},${w * .12} ${w * .52},0" stroke="${sh}" stroke-width="2.4" fill="none" opacity=".55"/>
+      <path d="M${-w * .28},${-L1 + w * .95} C${-w * .3},${-L1 + w * .1} ${w * .3},${-L1 + w * .1} ${w * .28},${-L1 + w * .95} Z" fill="${lg([[0, '#F9E1DA'], [1, '#EFC0B2']])}"/>
+      <path d="M${-w * .22},${-L1 + w * .3} C${-w * .1},${-L1 + w * .12} ${w * .1},${-L1 + w * .12} ${w * .22},${-L1 + w * .3}" stroke="#fff" stroke-width="3" fill="none" opacity=".75"/>
+      <path d="M${w * .08},${-L1 + w * .8} L${w * .1},${-L1 + w * .3}" stroke="#fff" stroke-width="2.5" opacity=".5"/></g>`;
+  };
+  const fs = [[-48, 39, 138, -7 - spread * 8], [-16, 41, 158, -2 - spread * 3], [17, 40, 150, 3 + spread * 3], [49, 35, 116, 8 + spread * 8]];
+  const back = `<path d="M-64,0 C-72,-60 -76,-130 -70,-166 C-40,-182 40,-182 70,-166 C76,-130 72,-60 64,0 Z" fill="${skinG}"/>
+    <path d="M-70,-150 Q-58,-196 -34,-178 Q-18,-202 0,-182 Q18,-204 34,-180 Q56,-198 70,-150 Z" fill="${skinG}"/>
+    ${[-48, -16, 17, 49].map(bx => `<path d="M${bx * .35},-10 C${bx * .55},-80 ${bx * .8},-130 ${bx},-165" stroke="${sh}" stroke-width="3" fill="none" opacity=".22"/><ellipse cx="${bx}" cy="-170" rx="14" ry="9" fill="#FBE3D4" opacity=".55"/>`).join('')}
+    <path d="M-60,-20 C-40,-40 40,-40 60,-20" stroke="${sh}" stroke-width="3" fill="none" opacity=".2"/>`;
+  const th = thumb ? `<g transform="translate(-66,-58) rotate(${-48 + curl * 20})"><path d="M-17,0 C-19,-50 -16,-90 -12,-108 C-8,-122 8,-122 12,-108 C16,-90 19,-50 17,0 Z" fill="${skinG}"/>
+    <path d="M-10,-104 C-11,-118 11,-118 10,-104 L9,-86 C4,-82 -4,-82 -9,-86 Z" fill="#F4CDBF"/><path d="M-11,-58 q11,6 22,0" stroke="${sh}" stroke-width="2.4" fill="none" opacity=".5"/></g>` : '';
+  const sl = sleeve ? `<path d="M-92,-14 L92,-14 L110,560 L-110,560 Z" fill="${sleeve}"/><path d="M-92,-14 L92,-14 L94,14 L-94,14 Z" fill="#000" opacity=".18"/>` : '';
+  return `<g transform="translate(${x},${y}) rotate(${rot}) scale(${flip ? -s : s},${s})">${sl}${th}${fs.map(([bx, w, l, a]) => finger(bx, w, l, a)).join('')}${back}</g>`;
+}
+
+// ---------- ngồi nghiêng (nhìn sang phải), hông ở (x,y) ----------
+function sitSide(x, y, s, o = {}) {
+  const { col = '#EADFD3', pants = '#6E7F98', hairCol = P.hair, chair = true, head = 'down', desk = true, dark = null, face = {} } = o;
+  const C = c => dark || c;
+  const br = Math.sin(NOW * 1.6) * 3, hd = head === 'down' ? 14 : head === 'up' ? -8 : 2;
+  const slump = head === 'down' ? 1 : 0;
+  return `<g transform="translate(${x},${y + br}) scale(${s})">
+    ${chair ? `<rect x="-130" y="10" width="250" height="26" rx="10" fill="${C('#6E5440')}"/><rect x="-118" y="36" width="18" height="360" fill="${C('#5A4636')}"/><rect x="92" y="36" width="18" height="360" fill="${C('#5A4636')}"/><rect x="-150" y="-400" width="24" height="436" rx="10" fill="${C('#6E5440')}"/>` : ''}
+    <path d="M-70,-40 C40,-60 160,-58 250,-40 C262,-10 256,20 240,30 C150,40 30,40 -60,40 Z" fill="${C(pants)}"/>
+    <path d="M200,-36 C236,-30 256,0 250,40 L236,360 L186,360 Z" fill="${C(pants)}"/><path d="M180,352 L290,352 C300,378 284,392 256,392 L180,392 Z" fill="${C('#2B2420')}"/>
+    <path d="M-90,30 C-110,-110 -${90 - slump * 10},-300 -${40 - slump * 20},-430 C0,-470 70,-468 ${96 + slump * 16},-420 C${116 + slump * 10},-300 112,-120 96,30 Z" fill="${C(col)}"/>
+    <path d="M24,-450 C30,-480 44,-500 60,-520 L96,-508 C90,-484 86,-462 88,-440 Z" fill="${C(P.skinSh)}"/>
+    <g transform="translate(${100 + slump * 18},${-610 + slump * 10}) rotate(${hd}) scale(-.42,.42)">${faceProfile(0, 0, 1, { still: true, ...face, dark: !!dark })}</g>
+    <path d="M40,-410 C${70 + slump * 10},-320 ${100 + slump * 10},-240 ${120 + slump * 10},-180" stroke="${C(col)}" stroke-width="64" fill="none" stroke-linecap="round"/>
+    <path d="M${120 + slump * 10},-180 C200,-178 280,-176 ${340 - slump * 20},-172" stroke="${C(col)}" stroke-width="54" fill="none" stroke-linecap="round"/>
+    <ellipse cx="${366 - slump * 20}" cy="-172" rx="34" ry="24" fill="${C(P.skin)}"/>
+    ${desk ? `<rect x="180" y="-146" width="560" height="32" fill="${C('#8A6A4F')}"/><rect x="680" y="-114" width="24" height="520" fill="${C('#6E5440')}"/>` : ''}</g>`;
 }
