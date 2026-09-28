@@ -59,6 +59,8 @@ def pad(freqs, dur):
 
 def add(buf, sig, at):
     i = int(at * SR)
+    if i < 0:                      # bắt đầu trước giây 0: cắt bớt phần đầu
+        sig, i = sig[-i:], 0
     if i >= len(buf):
         return
     j = min(len(buf), i + len(sig))
@@ -91,6 +93,10 @@ for k, (st, prog, style, vol) in enumerate(SECTIONS):
 
 # ---------- Bản B-roll: nhạc từ lúc cô bé tìm đến Thoa tới hết, dâng dần lên cao trào ----------
 CUOI = load_sfx_early('nhac-cuoi') if BROLL else None
+PIANO = load_sfx_early('nhac-piano') if BROLL else None     # Sad Emotional Piano: đoạn Thoa → sứ mệnh
+EPIC = load_sfx_early('nhac-epic') if BROLL else None       # Epic Cinematic: tự quyết → cao trào → kết
+if PIANO is not None and EPIC is not None:
+    CUOI = 'hai-bai'
 if BROLL:
     SH = {x['id']: x['start'] for x in json.loads((DIR / 'broll/shots.json').read_text())}
     T_THOA, T_ROI, T_SUMENH, T_TUQUYET = SH['24-den-tim-thoa'], SH['32-roi-sai-gon'], SH['39-den-vong'], SH['46-buoc-vao-spa']
@@ -143,7 +149,7 @@ if BROLL:
         (T_KHONG, TOTAL, [(43, D_(55, MAJ)), (38, D_(62, MAJ)), (45, D_(57, MAJ)), (38, D_(62, MAJ))], 'cao', 1.25),
     ]
     arr = np.zeros(N)
-    for st, en, prog, style, vol in ([] if CUOI is not None else PLAN):
+    for st, en, prog, style, vol in ([] if CUOI is not None else PLAN):  # noqa: nhạc tự tạo khi chưa có bài
         bi, t = 0, st
         while t < en - .2:
             bass, ch = prog[bi % 4]
@@ -172,7 +178,35 @@ if BROLL:
                     add(arr, kick((.5 if style == 'day' else .45 + .35 * (t - st) / max(1, en - st)) * vol), t + b * BAR / 4)
             bi += 1
             t += BAR
-    if CUOI is not None:
+    if isinstance(CUOI, str):
+        rms = lambda x: np.sqrt(np.mean(x ** 2)) or 1e-9
+        ref = rms(music[:int(30 * SR)])
+        db = lambda d: 10 ** (d / 20)
+        # Piano: phần bùng lên của bài (giây 42) rơi đúng lúc Thoa bắt đầu xây kênh
+        P_OFF = T_SUMENH - 42.0
+        pl = np.zeros(N); add(pl, PIANO, P_OFF)
+        q_rms = rms(PIANO[:int(40 * SR)]); b_rms = rms(PIANO[int(44 * SR):int(84 * SR)])
+        gp = np.where(tt < T_SUMENH - 1, ref * db(0) / q_rms, ref * db(6.5) / b_rms)
+        k = int(1.2 * SR); gp = np.convolve(gp, np.ones(k) / k, 'same')
+        X0, X1 = T_TUQUYET - 2.0, T_TUQUYET + 1.5            # piano nhường chỗ cho Epic
+        pl *= gp * (1 - np.clip((tt - X0) / (X1 - X0), 0, 1)) * np.clip((tt - P_OFF) / 1.5, 0, 1)
+        # Epic: điểm nhấn mạnh nhất (giây 147.5) trùng câu "Không, cái này tôi chưa cần"; bài tự kết cùng video
+        E_OFF = T_KHONG - 147.5
+        ep = np.zeros(N); add(ep, EPIC, E_OFF)
+        ge = ref * db(10) / rms(EPIC[int(100 * SR):int(155 * SR)])
+        ep *= ge * np.clip((tt - X0) / (X1 - X0), 0, 1) ** 1.5
+        # Tiếng mưa nền lúc cô bé đứng trước cửa spa (lấp khoảng lặng sau nhạc kinh dị)
+        noise = rng.standard_normal(N)
+        rain_s = np.convolve(noise, np.ones(6) / 6, 'same') - np.convolve(noise, np.ones(60) / 60, 'same')
+        for _ in range(140):
+            at = T_THOA - 1.5 + rng.random() * 5.5
+            i = int(at * SR); n = int(.03 * SR)
+            if i + n < N: rain_s[i:i + n] += rng.standard_normal(n) * np.exp(-np.arange(n) / SR * 120) * 2.5
+        rain_env = np.clip((tt - (T_THOA - 2.2)) / 1.2, 0, 1) * np.clip((P_OFF + 2.5 - tt) / 2.0, 0, 1)
+        arr = pl + ep + rain_s * rain_env * ref * db(-4) / rms(rain_s[int(T_THOA * SR):int((T_THOA + 2) * SR)])
+        print(f'nhạc B-roll: piano từ {P_OFF:.1f}s (bùng lên {T_SUMENH:.1f}s) → Epic vào {X0:.1f}–{X1:.1f}s → cao trào {T_KHONG:.1f}s → bài kết {E_OFF + 162:.1f}s')
+        PLAN = []
+    elif CUOI is not None:
         # Bài nhạc anh chọn: đặt đoạn cao trào của bài trùng câu "Không, cái này tôi chưa cần"
         cx = CUOI.mean(1) if CUOI.ndim > 1 else CUOI
         hop = SR // 10
@@ -197,16 +231,20 @@ if BROLL:
     rms = lambda x: np.sqrt(np.mean(x ** 2)) or 1e-9
     ref = rms(music[:int(30 * SR)])
     target = {'lang': 1, 'di': 3.5, 'day': 6, 'don': 9, 'cao': 13, 'bai': 6}
-    gain = np.zeros(N)
+    gain = np.ones(N) if isinstance(CUOI, str) else np.zeros(N)
     for st, en, prog, style, vol in PLAN:
         i0, i1 = int(max(st, 0) * SR), int(min(en, TOTAL) * SR)
         g = ref * 10 ** (target[style] / 20) / rms(arr[i0:i1])
         gain[i0:i1] = g
     k = int(.8 * SR)
-    gain = np.convolve(gain, np.ones(k) / k, 'same')            # chuyển mức mượt giữa các đoạn
+    if not isinstance(CUOI, str):
+        gain = np.convolve(gain, np.ones(k) / k, 'same')        # chuyển mức mượt giữa các đoạn
     arr *= gain
-    arr *= np.clip((TOTAL - tt) / 3.5, 0, 1)          # khép lại, nhỏ dần
-    arr *= np.clip((tt - (T_THOA - .5)) / 2.5, 0, 1)
+    if not isinstance(CUOI, str):
+        arr *= np.clip((TOTAL - tt) / 3.5, 0, 1)      # khép lại, nhỏ dần
+        arr *= np.clip((tt - (T_THOA - .5)) / 2.5, 0, 1)
+    else:
+        arr *= np.clip((TOTAL + .8 - tt) / 1.5, 0, 1)  # bài tự kết; chỉ vuốt nhẹ khung cuối
     music = music + arr
     for st, en, prog, style, vol in PLAN:
         seg = music[int(st * SR):int(min(en, TOTAL) * SR)]
