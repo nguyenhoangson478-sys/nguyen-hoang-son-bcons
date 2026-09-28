@@ -23,7 +23,7 @@ node render.mjs          # storyboard tĩnh
 node render-video.mjs    # video (chưa có tiếng)
 node sfx-events.mjs && python3 audio.py   # âm thanh -> build/audio.wav
 ```
-Muốn dùng tiếng whoosh riêng: đặt file vào `sfx/whoosh.wav` (hoặc .mp3) trước khi chạy `audio.py`.
+Tiếng riêng trong `sfx/`: `whoosh.*` thay tiếng chuyển cảnh; `nhac-kinh-di.*` là nhạc nền đoạn cô bé tuyệt vọng (cảnh 5–8). Nhạc vào ở câu "Cho đến một ngày…", cao trào rơi đúng "Mụn nhiều hơn", tắt dần sau "Rốt cuộc da mình đang bị gì?". Piano được tắt trong đoạn này.
 
 Sau đó chạy `./mux.sh` để ghép tiếng: bản im lặng đổi tên thành `spa-nha-thor-khong-nhac.mp4`, bản có tiếng là `spa-nha-thor.mp4`.
 

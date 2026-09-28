@@ -109,7 +109,7 @@ def thud():
 
 # Tiếng ngoài: thả file vào thư mục sfx/ (whoosh.wav/.mp3…) để thay tiếng tự tạo
 FFMPEG = None
-def load_sfx(name):
+def load_sfx(name, ch=1):
     global FFMPEG
     files = sorted((DIR / 'sfx').glob(name + '.*'))
     if not files:
@@ -118,9 +118,11 @@ def load_sfx(name):
         import imageio_ffmpeg
         FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
     import subprocess
-    raw = subprocess.run([FFMPEG, '-loglevel', 'error', '-i', str(files[0]), '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'],
+    raw = subprocess.run([FFMPEG, '-loglevel', 'error', '-i', str(files[0]), '-ac', str(ch), '-ar', str(SR), '-f', 'f32le', '-'],
                          capture_output=True, check=True).stdout
     x = np.frombuffer(raw, dtype='<f4').astype(float)
+    if ch > 1:
+        x = x.reshape(-1, ch)
     return x / (np.abs(x).max() or 1), files[0].name
 
 ext = load_sfx('whoosh')
@@ -141,8 +143,37 @@ for at in ev['drops']:
 for at in ev['flashes']:
     add(sfx, shutter() * .5, at)
 
-L = left * .32 + sfx
-R = right * .32 + sfx
+def ramp(t0, t1):
+    """0 trước t0, lên 1 ở t1 (dạng cos, mượt)."""
+    t = np.arange(N) / SR
+    return .5 - .5 * np.cos(np.pi * np.clip((t - t0) / (t1 - t0), 0, 1))
+
+L, R = left * .32, right * .32
+# Nhạc kinh dị cho đoạn cô bé tuyệt vọng (cảnh 5–8): sfx/nhac-kinh-di.*
+bed = load_sfx('nhac-kinh-di', ch=2)
+if bed:
+    hx, hname = bed
+    s5, s7, s9 = ev['scenes'][4], ev['scenes'][6], ev['scenes'][8]
+    HIT = 9.8                                   # giây nhạc bùng lên trong file gốc
+    start = s7 - HIT                            # để cao trào rơi đúng "Mụn nhiều hơn"
+    skip = max(0, s5 - .6 - start)              # nếu phần dồn dài hơn, cắt bớt đầu
+    start += skip
+    seg = hx[int(skip * SR):]
+    hl, hr = np.zeros(N), np.zeros(N)
+    add(hl, seg[:, 0], start); add(hr, seg[:, 1], start)
+    fade_in = ramp(s5 - .6, s5 + .8)
+    fade_out = 1 - ramp(s9 - 1.6, s9 + .5)      # tắt sau câu "Rốt cuộc da mình đang bị gì?"
+    env = fade_in * fade_out
+    # Cân mức: đoạn cao trào to hơn piano khoảng 3 dB
+    piano_rms = np.sqrt(np.mean(L[int(s9 * SR):int((s9 + 20) * SR)] ** 2))
+    loud = hl[int(s7 * SR):int((s7 + 10) * SR)]
+    gain = piano_rms * 1.41 / (np.sqrt(np.mean(loud ** 2)) or 1)
+    duck = 1 - env                              # tắt piano trong đoạn này
+    L, R = L * duck + hl * env * gain, R * duck + hr * env * gain
+    print(f'nhạc nền đoạn tuyệt vọng: {hname}, {s5 - .6:.1f}s → {s9 + .5:.1f}s, cao trào ở {s7:.1f}s')
+
+L = L + sfx
+R = R + sfx
 fade = np.ones(N)
 fn = int(2.5 * SR)
 fade[-fn:] = np.linspace(1, 0, fn)
