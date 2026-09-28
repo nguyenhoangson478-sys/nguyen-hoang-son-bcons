@@ -362,6 +362,25 @@ for at in ([] if BROLL else ev['pops']):
     add(sfx, pop() * .28, at)
 for at in ([] if BROLL else ev['drops']):
     add(sfx, thud() * .5, at)
+# Tiếng khóc nấc của cô bé (sfx/khoc.*): cắt từng đoạn trong file, đặt vào các cảnh khóc
+khoc = load_sfx('khoc') if BROLL else None
+if khoc is not None:
+    kx = khoc[0]
+    SHK = {x['id']: (x['start'], x['d']) for x in json.loads((DIR / 'broll/shots.json').read_text())}
+    # (cú máy, bắt đầu sau bao lâu, dài, độ to) — nhỏ ở đầu, to nhất lúc ôm mặt, rồi dịu lại khi kể với Thoa
+    CUES = [('14-quay-di', 1.0, 1.4, .45), ('18-bat-khoc', .1, 1.3, .8), ('23a-om-mat', 0, 1.8, 1.0),
+            ('23b-dem-mua', 0, 1.2, .5), ('25a-ke-chuyen', .1, 1.8, .55)]
+    env = np.convolve(np.abs(kx), np.ones(2205) / 2205, 'same')
+    act = kx[env > env.max() * .1]
+    kx = kx / (np.sqrt(np.mean(act ** 2)) or 1) * .1
+    pos = 0.0
+    for sid, dt, ln, g in CUES:
+        n = int(ln * SR); i0 = int(pos * SR) % max(1, len(kx) - n)
+        seg = kx[i0:i0 + n].copy(); f = int(.12 * SR)
+        seg[:f] *= np.linspace(0, 1, f); seg[-f:] *= np.linspace(1, 0, f)
+        add(sfx, seg * g, SHK[sid][0] + dt)
+        pos += ln
+    print('tiếng khóc:', khoc[1], len(CUES), 'chỗ')
 cam = load_sfx('camera')                     # tiếng máy ảnh riêng: sfx/camera.*
 if BROLL:
     shots = {x['id']: x for x in json.loads((DIR / 'broll/shots.json').read_text())}
