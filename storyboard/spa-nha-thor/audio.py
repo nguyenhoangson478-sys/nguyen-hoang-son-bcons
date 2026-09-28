@@ -107,8 +107,33 @@ def thud():
     t = np.arange(int(.25 * SR)) / SR
     return np.sin(2 * np.pi * (120 - 60 * t / .25) * t) * np.exp(-t * 16)
 
-for at in ev['scenes'][1:]:
-    add(sfx, whoosh() * .22, at - .25)
+# Tiếng ngoài: thả file vào thư mục sfx/ (whoosh.wav/.mp3…) để thay tiếng tự tạo
+FFMPEG = None
+def load_sfx(name):
+    global FFMPEG
+    files = sorted((DIR / 'sfx').glob(name + '.*'))
+    if not files:
+        return None
+    if FFMPEG is None:
+        import imageio_ffmpeg
+        FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
+    import subprocess
+    raw = subprocess.run([FFMPEG, '-loglevel', 'error', '-i', str(files[0]), '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'],
+                         capture_output=True, check=True).stdout
+    x = np.frombuffer(raw, dtype='<f4').astype(float)
+    return x / (np.abs(x).max() or 1), files[0].name
+
+ext = load_sfx('whoosh')
+if ext:
+    wsig, wname = ext
+    env = np.convolve(np.abs(wsig), np.ones(2205) / 2205, 'same')
+    peak = env.argmax() / SR          # đỉnh tiếng whoosh rơi đúng lúc chuyển cảnh
+    print('whoosh:', wname, f'đỉnh ở {peak:.2f}s')
+    for at in ev['scenes'][1:]:
+        add(sfx, wsig * .45, max(0, at + .25 - peak))
+else:
+    for at in ev['scenes'][1:]:
+        add(sfx, whoosh() * .22, at - .25)
 for at in ev['pops']:
     add(sfx, pop() * .28, at)
 for at in ev['drops']:

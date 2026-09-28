@@ -23,6 +23,8 @@ node render.mjs          # storyboard tĩnh
 node render-video.mjs    # video (chưa có tiếng)
 node sfx-events.mjs && python3 audio.py   # âm thanh -> build/audio.wav
 ```
+Muốn dùng tiếng whoosh riêng: đặt file vào `sfx/whoosh.wav` (hoặc .mp3) trước khi chạy `audio.py`.
+
 Sau đó chạy `./mux.sh` để ghép tiếng: bản im lặng đổi tên thành `spa-nha-thor-khong-nhac.mp4`, bản có tiếng là `spa-nha-thor.mp4`.
 
 Xem trước một khung bất kỳ: `node render-video.mjs --still 12.5 40`, ảnh ra trong `build/`.
