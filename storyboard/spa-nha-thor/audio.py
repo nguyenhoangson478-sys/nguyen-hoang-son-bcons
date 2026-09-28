@@ -7,6 +7,10 @@ import wave
 from pathlib import Path
 
 import numpy as np
+import os
+
+# BROLL=1: bản cho video B-roll điện ảnh (cắt cảnh khác bản hoạt hình) — chỉ giữ nhạc, boom, máy ảnh
+BROLL = os.environ.get('BROLL') == '1'
 
 SR = 44100
 DIR = Path(__file__).parent
@@ -135,7 +139,7 @@ LOUDER = {'whoosh-5': 1.4}                               # tiếng u ám cho n�
 BOOM_AT = [5]            # cảnh có tiếng boom khi chuyển tới: tuyệt vọng bất ngờ đổ ập (sfx/boom.*)
 
 cache = {}
-for k, at in enumerate(ev['scenes'][1:], start=2):
+for k, at in enumerate([] if BROLL else ev['scenes'][1:], start=2):
     name = WHOOSH.get(k, 'whoosh')
     if name not in cache:
         got = load_sfx(name)
@@ -163,11 +167,14 @@ if boom:
         at = ev['scenes'][k - 1]
         add(sfx, b * .55, max(0, at + .05 - hit))
         print(f'boom: cảnh {k}, nổ ở {at + .05:.2f}s')
-for at in ev['pops']:
+for at in ([] if BROLL else ev['pops']):
     add(sfx, pop() * .28, at)
-for at in ev['drops']:
+for at in ([] if BROLL else ev['drops']):
     add(sfx, thud() * .5, at)
 cam = load_sfx('camera')                     # tiếng máy ảnh riêng: sfx/camera.*
+if BROLL:
+    shots = {x['id']: x for x in json.loads((DIR / 'broll/shots.json').read_text())}
+    ev['flashes'] = [shots['22-khung-ngam']['start'] + 1.6, shots['50-vao-khung']['start'] + 3.3]
 for at in ev['flashes']:
     if cam:
         c = cam[0]
@@ -218,7 +225,7 @@ fade[:int(.05 * SR)] = np.linspace(0, 1, int(.05 * SR))
 stereo = np.stack([L * fade, R * fade], 1)
 stereo = stereo / max(1, np.abs(stereo).max() / .9)
 
-out = DIR / 'build/audio.wav'
+out = DIR / ('build/audio-broll.wav' if BROLL else 'build/audio.wav')
 with wave.open(str(out), 'wb') as w:
     w.setnchannels(2)
     w.setsampwidth(2)

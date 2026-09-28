@@ -1,0 +1,368 @@
+[
+ {
+  "i": 1,
+  "id": "01-guong-sang",
+  "start": 0,
+  "d": 3.4
+ },
+ {
+  "i": 2,
+  "id": "02-mu-roi",
+  "start": 3.4,
+  "d": 3.2
+ },
+ {
+  "i": 3,
+  "id": "03-anh-khuyet",
+  "start": 6.6,
+  "d": 3.2
+ },
+ {
+  "i": 4,
+  "id": "04a-phong-ktx",
+  "start": 9.8,
+  "d": 2.2
+ },
+ {
+  "i": 5,
+  "id": "04b-ban-hoc",
+  "start": 12,
+  "d": 2.2
+ },
+ {
+  "i": 6,
+  "id": "05-lich-chup",
+  "start": 14.2,
+  "d": 2.5
+ },
+ {
+  "i": 7,
+  "id": "06-guong-tay",
+  "start": 16.7,
+  "d": 1.8
+ },
+ {
+  "i": 8,
+  "id": "07a-mo-tot-nghiep",
+  "start": 18.5,
+  "d": 2.5
+ },
+ {
+  "i": 9,
+  "id": "07b-tung-mu",
+  "start": 21,
+  "d": 2.3
+ },
+ {
+  "i": 10,
+  "id": "08-soi-da",
+  "start": 23.3,
+  "d": 4
+ },
+ {
+  "i": 11,
+  "id": "09-the-lieu-trinh",
+  "start": 27.3,
+  "d": 1.5
+ },
+ {
+  "i": 12,
+  "id": "10-them-serum",
+  "start": 28.8,
+  "d": 1.7
+ },
+ {
+  "i": 13,
+  "id": "11-the-hen",
+  "start": 30.5,
+  "d": 2.4
+ },
+ {
+  "i": 14,
+  "id": "12-ky-hoa-don",
+  "start": 32.9,
+  "d": 2.9
+ },
+ {
+  "i": 15,
+  "id": "13-den-chap",
+  "start": 35.8,
+  "d": 2.5
+ },
+ {
+  "i": 16,
+  "id": "14-khan-phu-guong",
+  "start": 38.3,
+  "d": 2.7
+ },
+ {
+  "i": 17,
+  "id": "15-go-tin-nhan",
+  "start": 41,
+  "d": 2.2
+ },
+ {
+  "i": 18,
+  "id": "16-thu-hoi",
+  "start": 43.2,
+  "d": 2.2
+ },
+ {
+  "i": 19,
+  "id": "17-mun-day",
+  "start": 45.4,
+  "d": 1.6
+ },
+ {
+  "i": 20,
+  "id": "18-cham-ma",
+  "start": 47,
+  "d": 1.4
+ },
+ {
+  "i": 21,
+  "id": "19-so-du",
+  "start": 48.4,
+  "d": 3.4
+ },
+ {
+  "i": 22,
+  "id": "20-phong-bi",
+  "start": 51.8,
+  "d": 4.2
+ },
+ {
+  "i": 23,
+  "id": "21-tot-nghiep-lui-ra",
+  "start": 56,
+  "d": 3.5
+ },
+ {
+  "i": 24,
+  "id": "22-khung-ngam",
+  "start": 59.5,
+  "d": 2.9
+ },
+ {
+  "i": 25,
+  "id": "23-dem-mua",
+  "start": 62.4,
+  "d": 3.5
+ },
+ {
+  "i": 26,
+  "id": "24-muoi-nam",
+  "start": 65.9,
+  "d": 3.1
+ },
+ {
+  "i": 27,
+  "id": "25-nhung-cau-chuyen",
+  "start": 69,
+  "d": 3.4
+ },
+ {
+  "i": 28,
+  "id": "26a-thoa-cua-kinh",
+  "start": 72.4,
+  "d": 2.2
+ },
+ {
+  "i": 29,
+  "id": "26b-phan-chieu-neon",
+  "start": 74.6,
+  "d": 2.2
+ },
+ {
+  "i": 30,
+  "id": "27-gap-catalogue",
+  "start": 76.8,
+  "d": 3.8
+ },
+ {
+  "i": 31,
+  "id": "28-gach-danh-sach",
+  "start": 80.6,
+  "d": 2.4
+ },
+ {
+  "i": 32,
+  "id": "29-cat-chai",
+  "start": 83,
+  "d": 1.9
+ },
+ {
+  "i": 33,
+  "id": "30-ly-nuoc",
+  "start": 84.9,
+  "d": 2.1
+ },
+ {
+  "i": 34,
+  "id": "31a-nang-som",
+  "start": 87,
+  "d": 2.2
+ },
+ {
+  "i": 35,
+  "id": "31b-ngu-yen",
+  "start": 89.2,
+  "d": 2.2
+ },
+ {
+  "i": 36,
+  "id": "32-roi-sai-gon",
+  "start": 91.4,
+  "d": 2.7
+ },
+ {
+  "i": 37,
+  "id": "33-cua-so-xe",
+  "start": 94.1,
+  "d": 2.7
+ },
+ {
+  "i": 38,
+  "id": "34-lang-dai-hoc",
+  "start": 96.8,
+  "d": 2.3
+ },
+ {
+  "i": 39,
+  "id": "35-bai-co",
+  "start": 99.1,
+  "d": 1.5
+ },
+ {
+  "i": 40,
+  "id": "36-vi-mong",
+  "start": 100.6,
+  "d": 2.2
+ },
+ {
+  "i": 41,
+  "id": "37-quang-cao",
+  "start": 102.8,
+  "d": 2.5
+ },
+ {
+  "i": 42,
+  "id": "38a-mat-phan-chieu",
+  "start": 105.3,
+  "d": 2.8
+ },
+ {
+  "i": 43,
+  "id": "38b-so-guong",
+  "start": 108.1,
+  "d": 2.9
+ },
+ {
+  "i": 44,
+  "id": "39-den-vong",
+  "start": 111,
+  "d": 3.7
+ },
+ {
+  "i": 45,
+  "id": "40-phong-spa-nho",
+  "start": 114.7,
+  "d": 2.5
+ },
+ {
+  "i": 46,
+  "id": "41-den-soi-da",
+  "start": 117.2,
+  "d": 3.8
+ },
+ {
+  "i": 47,
+  "id": "42-phep-mau",
+  "start": 121,
+  "d": 1.8
+ },
+ {
+  "i": 48,
+  "id": "43a-so-tay",
+  "start": 122.8,
+  "d": 2.5
+ },
+ {
+  "i": 49,
+  "id": "43b-doc-thanh-phan",
+  "start": 125.3,
+  "d": 2.5
+ },
+ {
+  "i": 50,
+  "id": "44-thu-co-tay",
+  "start": 127.8,
+  "d": 2.9
+ },
+ {
+  "i": 51,
+  "id": "45-keo-khan",
+  "start": 130.7,
+  "d": 3.3
+ },
+ {
+  "i": 52,
+  "id": "46-buoc-vao-spa",
+  "start": 134,
+  "d": 2.6
+ },
+ {
+  "i": 53,
+  "id": "47a-ngoi-thang",
+  "start": 136.6,
+  "d": 2.7
+ },
+ {
+  "i": 54,
+  "id": "47b-lat-so",
+  "start": 139.3,
+  "d": 2.6
+ },
+ {
+  "i": 55,
+  "id": "48-anh-mat",
+  "start": 141.9,
+  "d": 2.9
+ },
+ {
+  "i": 56,
+  "id": "49a-day-lai",
+  "start": 144.8,
+  "d": 2.6
+ },
+ {
+  "i": 57,
+  "id": "49b-buoc-ra-nang",
+  "start": 147.4,
+  "d": 2.5
+ },
+ {
+  "i": 58,
+  "id": "50-vao-khung",
+  "start": 149.9,
+  "d": 4
+ },
+ {
+  "i": 59,
+  "id": "51-anh-tron-ven",
+  "start": 153.9,
+  "d": 3.1
+ },
+ {
+  "i": 60,
+  "id": "52a-hoang-hon",
+  "start": 157,
+  "d": 3
+ },
+ {
+  "i": 61,
+  "id": "52b-bien-la",
+  "start": 160,
+  "d": 3.2
+ }
+]

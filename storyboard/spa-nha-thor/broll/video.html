@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>B-roll điện ảnh</title>
+<link href="../src/fonts.css" rel="stylesheet">
+<style>*{margin:0}body{background:#000;overflow:hidden}#stage{width:1080px;height:1920px;overflow:hidden}</style></head><body>
+<div id="stage"></div>
+<script src="cine.js"></script>
+<script src="shots-1.js"></script>
+<script src="shots-2.js"></script>
+<script src="shots-3.js"></script>
+<script>
+const FPS = 30;
+let acc = 0; SHOTS.forEach(s => { s.start = acc; acc += s.d; });
+window.TOTAL = acc; window.FPS = FPS;
+window.LIST = SHOTS.map((s, i) => ({ i: i + 1, id: s.id, start: +s.start.toFixed(2), d: s.d }));
+const stage = document.getElementById('stage');
+window.render = function (T) {
+  let k = SHOTS.findIndex(s => T < s.start + s.d); if (k < 0) k = SHOTS.length - 1;
+  const s = SHOTS[k], t = T - s.start, p = clamp(t / s.d);
+  resetDefs(); setCam();
+  const body = s.draw(t, p);
+  const g = s.grade(t, p);
+  const fade = (k === SHOTS.length - 1) ? clamp((s.d - t) / 1.5) : 1;
+  const tail = post(Math.round(T * FPS), { ...g, dark: Math.max(g.dark || 0, 1 - fade) });
+  stage.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><defs>${DEFS.join('')}</defs>${body}${tail}</svg>`;
+  return s.id;
+};
+window.renderShot = function (i, frac) { const s = SHOTS[i]; return render(s.start + s.d * frac); };
+</script></body></html>
