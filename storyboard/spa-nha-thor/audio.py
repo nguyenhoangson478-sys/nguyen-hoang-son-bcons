@@ -187,7 +187,7 @@ if BROLL:
         pl = np.zeros(N); add(pl, PIANO, P_OFF)
         q_rms = rms(PIANO[:int(40 * SR)]); b_rms = rms(PIANO[int(44 * SR):int(84 * SR)])
         gp = np.where(tt < T_SUMENH - 1, ref * db(0) / q_rms, ref * db(6.5) / b_rms)
-        k = int(1.2 * SR); gp = np.convolve(gp, np.ones(k) / k, 'same')
+        k = int(1.2 * SR); cs = np.cumsum(np.concatenate([np.full(k // 2, gp[0]), gp, np.full(k - k // 2, gp[-1])])); gp = (cs[k:] - cs[:-k])[:len(gp)] / k   # trung bình trượt nhanh
         X0, X1 = T_TUQUYET - 2.0, T_TUQUYET + 1.5            # piano nhường chỗ cho Epic
         pl *= gp * (1 - np.clip((tt - X0) / (X1 - X0), 0, 1)) * np.clip((tt - P_OFF) / 1.5, 0, 1)
         # Epic: điểm nhấn mạnh nhất (giây 147.5) trùng câu "Không, cái này tôi chưa cần"; bài tự kết cùng video
@@ -350,6 +350,9 @@ for k, at in enumerate([] if BROLL else ev['scenes'][1:], start=2):
         add(sfx, whoosh() * .22, at - .25)
 if not BROLL: print('whoosh:', ', '.join(f'{k}:{WHOOSH.get(k)}' for k in range(2, 16) if cache.get(WHOOSH.get(k))))
 boom = load_sfx('boom')
+if boom and BROLL:
+    bb = boom[0]; envb = np.convolve(np.abs(bb), np.ones(441) / 441, 'same')
+    add(sfx, bb * .28, max(0, 3.4 + .02 - np.argmax(envb > envb.max() * .3) / SR))   # boom nhẹ ở hook
 if boom:
     b = boom[0]
     env = np.convolve(np.abs(b), np.ones(441) / 441, 'same')
@@ -424,6 +427,24 @@ if bed:
     gain = piano_rms * 1.41 / (np.sqrt(np.mean(loud ** 2)) or 1)
     duck = 1 - ramp(sign - .2, sign + 2.5) * fade_out   # piano rút dần khi nhạc kinh dị len vào
     L, R = L * duck + hl * env * gain, R * duck + hr * env * gain
+    if BROLL:
+        # HOOK 0:00–0:10: nền rợn (phần mở đầu của nhạc kinh dị) + piano chạy ngược hút vào "Không ngờ…" + boom trầm nhẹ
+        HOOK_END, HIT = 9.8, 3.4
+        th = np.arange(N) / SR
+        duckh = 1 - .7 * np.clip((HOOK_END + 1.6 - th) / 1.6, 0, 1)          # piano ấm nhỏ lại trong hook
+        L, R = L * duckh, R * duckh
+        seg = hx[:int((HOOK_END + 1.5) * SR)].copy()
+        fo = np.clip((HOOK_END + 1.2 - th[:len(seg)]) / 1.6, 0, 1)[:, None]
+        fi = np.clip(th[:len(seg)] / .4, 0, 1)[:, None]
+        seg = seg * fo * fi * (1 + 1.6 * np.clip((3.0 - th[:len(seg)]) / 3.0, 0, 1))[:, None]   # giây đầu đủ to để bắt tai
+        gh = piano_rms * 10 ** (-1 / 20) / (np.sqrt(np.mean(seg[int(1 * SR):int(9 * SR)] ** 2)) or 1)
+        add(L, seg[:, 0] * gh, 0); add(R, seg[:, 1] * gh, 0)
+        if PIANO is not None:
+            rv = PIANO[int(42.0 * SR):int(44.4 * SR)][::-1].copy()              # hợp âm piano đảo chiều: vuốt lên
+            rv *= np.linspace(0, 1, len(rv)) ** 2
+            rv = rv / (np.sqrt(np.mean(rv ** 2)) or 1) * piano_rms * 10 ** (1 / 20)
+            add(L, rv, HIT - len(rv) / SR); add(R, rv, HIT - len(rv) / SR)
+        print(f'hook: nền rợn 0–{HOOK_END}s, piano ngược hút vào {HIT}s')
     print(f'nhạc nền đoạn tuyệt vọng: {hname}, {sign - .2:.1f}s → {s9 + .5:.1f}s, cao trào ở {recall:.1f}s')
 
 L = L + sfx
