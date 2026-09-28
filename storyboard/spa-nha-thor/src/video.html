@@ -159,5 +159,11 @@ window.render = function (time) {
 };
 window.TIMELINE = VIDEO.map((sc, i) => ({ i: i + 1, start: +sc.start.toFixed(2), dur: +sc.dur.toFixed(2),
   lines: sc.L.map(l => ({ t: l.t.replace(/\*/g, ''), start: +(sc.start + l.start).toFixed(2), end: +(sc.start + l.end).toFixed(2) })) }));
+// ?overlay: chỉ giữ chữ và thẻ (nền trong suốt) để phủ lên hình 3D
+if (location.search.includes('overlay')) {
+  const st = document.createElement('style');
+  st.textContent = 'html,body,#stage{background:transparent!important}.scene{background:transparent!important}.scene .cam{display:none}';
+  document.head.appendChild(st);
+}
 render(0);
 </script></body></html>
