@@ -79,7 +79,7 @@ Cột "Lời" là câu Thoa nói ở đoạn đó.
 | 1 | 0:00–0:03.4 | chỉ muốn hết mụn trước ngày tốt nghiệp | Gương phòng tắm nắng sớm, bụi bay; đầu ngón tay chạm khẽ một nốt mụn trong gương; áo tốt nghiệp treo nhoè phía sau | Đẩy chậm |
 | 2 | 0:03.4–0:06.6 | không ngờ thứ mất đi sau đó… | Mũ tốt nghiệp rơi quay chậm trong bóng tối, dây tua đung đưa | Quay chậm |
 | 3 | 0:06.6–0:09.8 | lại không chỉ là tiền | Tấm ảnh tốt nghiệp in ra trên bàn: một chỗ trống giữa đám bạn | Lia chậm, lấy nét vào khoảng trống |
-| 4 | 0:09.8–0:14.2 | một cô bé… một chuyện rất nhỏ | Toàn cảnh phòng ký túc xá buổi sáng: cô bé ngồi bàn học nhỏ, gương tròn, cây xanh | Lia ngang nhiều lớp |
+| 4 | 0:09.8–0:14.2 | cô bé tìm đến Thoa với một câu chuyện rất buồn | Toàn cảnh phòng ký túc xá buổi sáng: cô bé ngồi bàn học nhỏ, gương tròn, cây xanh | Lia ngang nhiều lớp |
 | 5 | 0:14.2–0:16.7 | sắp chụp ảnh tốt nghiệp | Màn hình khoá điện thoại: "Chụp ảnh tốt nghiệp · còn 14 ngày"; hậu cảnh áo tốt nghiệp | Lấy nét chuyển điện thoại → áo |
 | 6 | 0:16.7–0:18.5 | da có mấy nốt mụn | Cận gương cầm tay: mắt và 3 nốt mụn nhỏ | Nghiêng gương |
 | 7 | 0:18.5–0:23.3 | muốn đẹp hơn một chút trong ngày quan trọng nhất | Tưởng tượng: cô bé mặc áo tốt nghiệp ngược nắng hoàng hôn, bạn bè tung mũ | Ánh sáng loang như mơ, quay chậm |

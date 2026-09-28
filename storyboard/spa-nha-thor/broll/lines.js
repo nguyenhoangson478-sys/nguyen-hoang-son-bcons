@@ -19,7 +19,7 @@ const LINES = [
   "q": false
  },
  {
-  "t": "Có một cô bé từng tìm đến Thoa chỉ vì *một chuyện rất nhỏ*:",
+  "t": "Cô bé tìm đến Thoa với *một câu chuyện rất buồn*.",
   "s": 9.96,
   "e": 13.85,
   "q": false

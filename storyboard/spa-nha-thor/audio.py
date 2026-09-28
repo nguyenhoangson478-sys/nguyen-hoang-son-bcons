@@ -32,6 +32,18 @@ SECTIONS = [(0, PROG_HOPE, 'sparse', .8), (s[1], PROG_SAD, 'low', .7), (s[2], PR
             (s[4], PROG_SAD, 'low', .65), (s[8], PROG_HOPE, 'arp', .85), (s[14], PROG_HOPE, 'full', 1.0)]
 
 
+def load_sfx_early(name):
+    files = sorted((DIR / 'sfx').glob(name + '.*'))
+    if not files:
+        return None
+    import subprocess, imageio_ffmpeg
+    raw = subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), '-loglevel', 'error', '-i', str(files[0]), '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'],
+                         capture_output=True, check=True).stdout
+    x = np.frombuffer(raw, dtype='<f4').astype(float)
+    print('nhạc cuối:', files[0].name, f'{len(x) / SR:.1f}s')
+    return x / (np.abs(x).max() or 1)
+
+
 def piano(freq, dur=2.6, vel=1.0):
     t = np.arange(int(dur * SR)) / SR
     tone = sum(a * np.sin(2 * np.pi * freq * h * t) * np.exp(-t * d)
@@ -78,6 +90,7 @@ for k, (st, prog, style, vol) in enumerate(SECTIONS):
         t += BAR
 
 # ---------- Bản B-roll: nhạc từ lúc cô bé tìm đến Thoa tới hết, dâng dần lên cao trào ----------
+CUOI = load_sfx_early('nhac-cuoi') if BROLL else None
 if BROLL:
     SH = {x['id']: x['start'] for x in json.loads((DIR / 'broll/shots.json').read_text())}
     T_THOA, T_ROI, T_SUMENH, T_TUQUYET = SH['24-den-tim-thoa'], SH['32-roi-sai-gon'], SH['39-den-vong'], SH['46-buoc-vao-spa']
@@ -130,7 +143,7 @@ if BROLL:
         (T_KHONG, TOTAL, [(43, D_(55, MAJ)), (38, D_(62, MAJ)), (45, D_(57, MAJ)), (38, D_(62, MAJ))], 'cao', 1.25),
     ]
     arr = np.zeros(N)
-    for st, en, prog, style, vol in PLAN:
+    for st, en, prog, style, vol in ([] if CUOI is not None else PLAN):
         bi, t = 0, st
         while t < en - .2:
             bass, ch = prog[bi % 4]
@@ -159,16 +172,31 @@ if BROLL:
                     add(arr, kick((.5 if style == 'day' else .45 + .35 * (t - st) / max(1, en - st)) * vol), t + b * BAR / 4)
             bi += 1
             t += BAR
+    if CUOI is not None:
+        # Bài nhạc anh chọn: đặt đoạn cao trào của bài trùng câu "Không, cái này tôi chưa cần"
+        cx = CUOI.mean(1) if CUOI.ndim > 1 else CUOI
+        hop = SR // 10
+        e = np.sqrt(np.convolve(cx ** 2, np.ones(hop * 40) / (hop * 40), 'same'))[::hop]   # độ to trượt 4 giây
+        lead = np.convolve(e, np.ones(40) / 40, 'same')
+        rise = np.zeros(len(e)); rise[80:] = e[80:] - lead[:-80] if len(e) > 80 else 0   # chỗ nhạc bùng lên mạnh nhất
+        climax = int(np.argmax(rise[int(20 / .1):]) + 20 / .1) * .1 if len(e) > 300 else len(e) * .1 * .6
+        start = T_KHONG - climax
+        skip = max(0, (T_THOA - .5) - start)
+        seg = cx[int(skip * SR):]
+        add(arr, seg, start + skip)
+        print(f'nhạc cuối: cao trào của bài ở {climax:.1f}s → đặt trùng {T_KHONG:.1f}s (bắt đầu bài từ {skip:.1f}s)')
+        PLAN = [(T_THOA - .5, TOTAL, None, 'bai', 1)]
     # tiếng vút lên và nốt cao trào ngay câu "Không, cái này tôi chưa cần"
-    add(arr, riser(3.6) * .6, T_KHONG - 3.6)
-    add(arr, swell(1.2) * .5, T_KHONG - 1.2)
-    add(arr, kick(1.4), T_KHONG)
-    add(arr, strings([midi(n) for n in (50, 62, 66, 69, 74)], 4.5, .7, att=.05), T_KHONG)
-    add(arr, piano(midi(74), 4, .6) + piano(midi(78), 4, .5) + piano(midi(81), 4, .45), T_KHONG)
+    if CUOI is None: add(arr, riser(3.6) * .6, T_KHONG - 3.6)
+    if CUOI is None:
+        add(arr, swell(1.2) * .5, T_KHONG - 1.2)
+        add(arr, kick(1.4), T_KHONG)
+        add(arr, strings([midi(n) for n in (50, 62, 66, 69, 74)], 4.5, .7, att=.05), T_KHONG)
+        add(arr, piano(midi(74), 4, .6) + piano(midi(78), 4, .5) + piano(midi(81), 4, .45), T_KHONG)
     # cân âm lượng từng đoạn theo mức nhạc mở đầu (0–30s): dâng dần tới cao trào
     rms = lambda x: np.sqrt(np.mean(x ** 2)) or 1e-9
     ref = rms(music[:int(30 * SR)])
-    target = {'lang': 1, 'di': 3.5, 'day': 6, 'don': 9, 'cao': 13}
+    target = {'lang': 1, 'di': 3.5, 'day': 6, 'don': 9, 'cao': 13, 'bai': 6}
     gain = np.zeros(N)
     for st, en, prog, style, vol in PLAN:
         i0, i1 = int(max(st, 0) * SR), int(min(en, TOTAL) * SR)
@@ -249,13 +277,11 @@ BOOM_AT = [5]            # cảnh có tiếng boom khi chuyển tới: tuyệt v
 cache = {}
 if BROLL:
     # Whoosh tại các cú chuyển chính của B-roll (id cú máy → file)
-    BW = {'02-mu-roi': 'whoosh-3', '04a-phong-ktx': 'whoosh-14', '07a-mo-tot-nghiep': 'whoosh-18',
-          '08-soi-da': 'whoosh-14', '09-the-lieu-trinh': 'whoosh-30', '10-them-serum': 'whoosh-30', '11-the-hen': 'whoosh-30', '12-ky-hoa-don': 'whoosh-14',
-          '14-quay-di': 'whoosh-5', '15-go-tin-nhan': 'whoosh-5', '17-mun-day': 'whoosh-5', '19-so-du': 'whoosh-5', '21-tot-nghiep-lui-ra': 'whoosh-5', '23a-om-mat': 'whoosh-5',
-          '24-den-tim-thoa': 'whoosh-18', '26a-thoa-cua-kinh': 'whoosh-14', '28-gach-danh-sach': 'whoosh-30', '31a-nang-som': 'whoosh-18',
-          '32-roi-sai-gon': 'whoosh-14', '33-cua-so-xe': 'whoosh-18', '34-lang-dai-hoc': 'whoosh-18', '37-quang-cao': 'whoosh-30', '38a-mat-phan-chieu': 'whoosh-3',
-          '39-den-vong': 'whoosh-18', '41-den-soi-da': 'whoosh-14', '43a-so-tay': 'whoosh-30', '45-keo-khan': 'whoosh-18',
-          '46-buoc-vao-spa': 'whoosh-18', '48-anh-mat': 'whoosh-14', '49a-day-lai': 'whoosh-14', '50-vao-khung': 'whoosh-18', '52a-hoang-hon': 'whoosh-18'}
+    # Chỉ giữ whoosh ở các cú chuyển thật sự cần: chuyển hồi, cú sốc, bước ngoặt
+    BW = {'02-mu-roi': 'whoosh-3', '08-soi-da': 'whoosh-14',
+          '14-quay-di': 'whoosh-5', '21-tot-nghiep-lui-ra': 'whoosh-5', '23a-om-mat': 'whoosh-5',
+          '24-den-tim-thoa': 'whoosh-18', '32-roi-sai-gon': 'whoosh-14', '34-lang-dai-hoc': 'whoosh-18',
+          '39-den-vong': 'whoosh-18', '46-buoc-vao-spa': 'whoosh-18', '50-vao-khung': 'whoosh-18'}
     shots_b = {x['id']: x['start'] for x in json.loads((DIR / 'broll/shots.json').read_text())}
     for sid, name in BW.items():
         if name not in cache:
@@ -264,7 +290,7 @@ if BROLL:
             act = w[env > env.max() * .1]
             cache[name] = (w / (np.sqrt(np.mean(act ** 2)) or 1) * .1, env.argmax() / SR)
         w, peak = cache[name]
-        add(sfx, w * LOUDER.get(name, 1), max(0, shots_b[sid] - .02 - peak))
+        add(sfx, w * LOUDER.get(name, 1) * .7, max(0, shots_b[sid] - .02 - peak))   # nhỏ hơn bản hoạt hình cho đỡ thô
     print('whoosh B-roll:', len(BW), 'cú chuyển')
 for k, at in enumerate([] if BROLL else ev['scenes'][1:], start=2):
     name = WHOOSH.get(k, 'whoosh')
