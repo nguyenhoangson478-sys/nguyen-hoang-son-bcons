@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>B-roll điện ảnh — khung mẫu</title>
+<style>
+*{margin:0;box-sizing:border-box}
+body{background:#000}
+.frame{position:relative;width:1080px;height:1920px;overflow:hidden}
+.frame svg{position:absolute;inset:0}
+</style></head><body>
+<!-- Lớp hậu kỳ dùng chung: hạt phim, viền tối, nhoè tiền cảnh -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0"/>
+    </filter>
+    <filter id="dof6"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="dof12"><feGaussianBlur stdDeviation="12"/></filter>
+    <filter id="dof24"><feGaussianBlur stdDeviation="24"/></filter>
+    <filter id="glow"><feGaussianBlur stdDeviation="30"/></filter>
+    <radialGradient id="vig" cx="50%" cy="48%" r="75%">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity=".75"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<!-- A · "không còn dám soi gương" — phòng tắm tối, khăn phủ gương -->
+<div class="frame" id="A"><svg viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="aBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16242B"/><stop offset="1" stop-color="#0A1115"/></linearGradient>
+    <linearGradient id="aGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#48626B"/><stop offset="1" stop-color="#1D2D34"/></linearGradient>
+    <linearGradient id="aTowel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8E8578"/><stop offset=".35" stop-color="#B7AD9E"/><stop offset=".6" stop-color="#8A8174"/><stop offset=".85" stop-color="#A89E90"/><stop offset="1" stop-color="#6F675D"/></linearGradient>
+    <radialGradient id="aCone" cx="50%" cy="0%" r="90%"><stop offset="0" stop-color="#CFE8F0" stop-opacity=".55"/><stop offset="1" stop-color="#CFE8F0" stop-opacity="0"/></radialGradient>
+    <clipPath id="aMirror"><rect x="560" y="420" width="420" height="640" rx="14"/></clipPath>
+    <pattern id="tiles" width="135" height="135" patternUnits="userSpaceOnUse"><rect width="135" height="135" fill="none" stroke="#fff" stroke-opacity=".045" stroke-width="3"/></pattern>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#aBg)"/>
+  <rect width="1080" height="1180" fill="url(#tiles)"/>
+  <!-- khe cửa hắt ánh vàng -->
+  <rect x="0" y="0" width="46" height="1920" fill="#E7B77A" opacity=".16" filter="url(#dof24)"/>
+  <!-- đèn gương + chùm sáng lạnh -->
+  <rect x="600" y="336" width="340" height="30" rx="15" fill="#E9F7FB"/>
+  <rect x="580" y="320" width="380" height="60" rx="30" fill="#BFE6F2" opacity=".6" filter="url(#glow)"/>
+  <path d="M600,360 L940,360 L1080,1180 L420,1180 Z" fill="url(#aCone)" opacity=".5"/>
+  <!-- gương -->
+  <rect x="548" y="408" width="444" height="664" rx="20" fill="#27353B"/>
+  <rect x="560" y="420" width="420" height="640" rx="14" fill="url(#aGlass)"/>
+  <!-- phản chiếu hé ra ở góc dưới: má đỏ, mụn -->
+  <g clip-path="url(#aMirror)">
+    <g transform="translate(640,1010) rotate(-8)">
+      <ellipse cx="0" cy="0" rx="150" ry="170" fill="#C99A86"/>
+      <ellipse cx="-30" cy="30" rx="80" ry="60" fill="#C2574A" opacity=".55"/>
+      <circle cx="-50" cy="10" r="9" fill="#9E2F25"/><circle cx="-10" cy="50" r="8" fill="#9E2F25"/><circle cx="-80" cy="60" r="7" fill="#9E2F25"/><circle cx="20" cy="0" r="7" fill="#9E2F25"/>
+      <path d="M-70,-60 q25,-12 50,2" stroke="#1A1210" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M-150,-120 C-160,-240 120,-260 150,-110 L160,40 C120,-80 20,-130 -40,-110 C-90,-100 -130,-60 -150,20 Z" fill="#120D0C"/>
+    </g>
+    <rect x="560" y="420" width="420" height="640" fill="#0B1418" opacity=".35"/>
+  </g>
+  <!-- khăn phủ gương -->
+  <path d="M552,402 L996,402 L1000,470 C1004,640 992,760 1000,900 C960,930 930,880 890,915 C850,950 820,890 770,930 C735,958 720,880 690,905 C668,860 700,720 680,600 C668,520 640,470 552,470 Z" fill="url(#aTowel)"/>
+  <path d="M700,470 C720,620 700,760 730,900 M820,470 C840,640 815,780 840,920 M920,470 C930,620 915,760 940,900" stroke="#5E574E" stroke-opacity=".5" stroke-width="10" fill="none"/>
+  <path d="M552,402 L996,402 L996,440 L552,440 Z" fill="#CFC6B8" opacity=".6"/>
+  <!-- bồn rửa + chai lọ -->
+  <rect x="0" y="1170" width="1080" height="750" fill="#0E171B"/>
+  <rect x="0" y="1170" width="1080" height="14" fill="#9CC3CF" opacity=".25"/>
+  <ellipse cx="780" cy="1235" rx="220" ry="42" fill="#070C0F"/>
+  <g opacity=".85">
+    <rect x="930" y="1030" width="60" height="140" rx="16" fill="#23343B"/><rect x="945" y="1000" width="30" height="34" rx="6" fill="#2F434B"/>
+    <rect x="1000" y="1060" width="50" height="110" rx="14" fill="#1C2A30"/>
+    <rect x="870" y="1080" width="46" height="90" rx="12" fill="#2A3D44"/>
+  </g>
+  <!-- cô bé: tiền cảnh, quay lưng, tay níu khăn — nhoè vì lấy nét vào gương -->
+  <g filter="url(#dof12)">
+    <path d="M430,1560 C470,1360 540,1130 610,900" stroke="#1B252A" stroke-width="110" stroke-linecap="round" fill="none"/>
+    <ellipse cx="612" cy="890" rx="58" ry="66" fill="#8F7666"/>
+    <path d="M-120,1920 L-120,1560 C-60,1380 120,1330 300,1360 C420,1380 520,1470 560,1600 L620,1920 Z" fill="#161F24"/>
+    <ellipse cx="250" cy="1330" rx="300" ry="330" fill="#07090B"/>
+    <path d="M60,1040 C160,960 360,960 470,1060" stroke="#7FC4D6" stroke-opacity=".55" stroke-width="12" fill="none"/>
+  </g>
+  <rect width="1080" height="1920" fill="#1C4250" opacity=".12" style="mix-blend-mode:color"/>
+  <rect width="1080" height="1920" fill="url(#vig)"/>
+  <rect width="1080" height="1920" filter="url(#grain)" opacity=".11" style="mix-blend-mode:overlay"/>
+</svg></div>
+
+<!-- B · "rốt cuộc da mình đang bị gì?" — đêm mưa, ôm gối trên giường, ngược sáng -->
+<div class="frame" id="B"><svg viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="bBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0D1224"/><stop offset="1" stop-color="#05070E"/></linearGradient>
+    <linearGradient id="bOut" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2C4F"/><stop offset="1" stop-color="#2E3A5E"/></linearGradient>
+    <radialGradient id="bPhone" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#DDEBFF" stop-opacity=".75"/><stop offset="1" stop-color="#DDEBFF" stop-opacity="0"/></radialGradient>
+    <clipPath id="bWin"><rect x="170" y="280" width="740" height="860"/></clipPath>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bBg)"/>
+  <!-- cửa sổ: phố đêm nhoè, mưa -->
+  <rect x="150" y="260" width="780" height="900" fill="#05070E"/>
+  <rect x="170" y="280" width="740" height="860" fill="url(#bOut)"/>
+  <g clip-path="url(#bWin)">
+    <g filter="url(#dof24)" opacity=".9">
+      <circle cx="260" cy="900" r="40" fill="#F2B866"/><circle cx="360" cy="960" r="28" fill="#E98C5E"/><circle cx="520" cy="880" r="34" fill="#9CC8FF"/>
+      <circle cx="640" cy="1000" r="46" fill="#F2B866"/><circle cx="800" cy="920" r="30" fill="#FF8FA3"/><circle cx="720" cy="820" r="22" fill="#9CC8FF"/>
+      <circle cx="430" cy="780" r="20" fill="#F2B866"/><circle cx="870" cy="1040" r="38" fill="#F2B866"/>
+      <rect x="170" y="1040" width="740" height="100" fill="#3D3350"/>
+    </g>
+    <g id="rain" stroke="#DCE8FF" stroke-opacity=".3" stroke-width="3" stroke-linecap="round"></g>
+    <g id="drops" fill="#DCE8FF" fill-opacity=".35"></g>
+  </g>
+  <rect x="530" y="260" width="20" height="900" fill="#05070E"/>
+  <rect x="150" y="700" width="780" height="18" fill="#05070E"/>
+  <!-- ánh trăng hắt lên chăn -->
+  <path d="M170,1140 L910,1140 L1080,1500 L0,1500 Z" fill="#6E86C4" opacity=".12"/>
+  <!-- giường -->
+  <path d="M0,1330 C200,1290 880,1290 1080,1330 L1080,1920 L0,1920 Z" fill="#141A33"/>
+  <path d="M0,1420 C260,1380 520,1450 760,1400 C900,1370 1000,1400 1080,1420" stroke="#232B4D" stroke-width="30" fill="none"/>
+  <path d="M0,1600 C300,1560 600,1650 1080,1580" stroke="#1B2242" stroke-width="40" fill="none"/>
+  <!-- cô bé ôm gối, cúi mặt: bóng đen ngược sáng + viền sáng lạnh -->
+  <g>
+    <path d="M330,1360 C300,1200 360,1060 470,1010 C560,970 660,1000 700,1080 C740,1150 770,1250 760,1340 C700,1380 420,1390 330,1360 Z" fill="#04050A"/>
+    <path d="M640,1100 C720,1060 800,1110 800,1200 C800,1290 760,1340 700,1350 Z" fill="#04050A"/>
+    <ellipse cx="560" cy="1010" rx="120" ry="110" fill="#04050A"/>
+    <path d="M450,960 C420,1060 430,1180 470,1260 L520,1250 C500,1150 505,1060 520,990 Z" fill="#04050A"/>
+    <path d="M455,955 C500,890 620,890 670,960" stroke="#8FB4FF" stroke-opacity=".75" stroke-width="7" fill="none"/>
+    <path d="M700,1080 C730,1120 770,1110 795,1160" stroke="#8FB4FF" stroke-opacity=".6" stroke-width="6" fill="none"/>
+    <path d="M335,1350 C305,1210 350,1080 440,1025" stroke="#8FB4FF" stroke-opacity=".45" stroke-width="5" fill="none"/>
+  </g>
+  <!-- điện thoại úp sáng trên chăn -->
+  <ellipse cx="790" cy="1480" rx="260" ry="110" fill="url(#bPhone)" opacity=".6"/>
+  <g transform="translate(790,1480) rotate(-12)"><rect x="-70" y="-26" width="140" height="52" rx="10" fill="#EAF2FF"/><rect x="-58" y="-14" width="80" height="6" rx="3" fill="#9FB3D6"/><rect x="-58" y="0" width="110" height="6" rx="3" fill="#9FB3D6"/></g>
+  <rect width="1080" height="1920" fill="#2A3A78" opacity=".15" style="mix-blend-mode:color"/>
+  <rect width="1080" height="1920" fill="url(#vig)"/>
+  <rect width="1080" height="1920" filter="url(#grain)" opacity=".12" style="mix-blend-mode:overlay"/>
+</svg></div>
+
+<!-- C · "một liệu trình… thêm sản phẩm…" — qua vai, quầy spa, hoá đơn dài -->
+<div class="frame" id="C"><svg viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="cBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B2A20"/><stop offset="1" stop-color="#1E1510"/></linearGradient>
+    <linearGradient id="cTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EDE4D7"/><stop offset="1" stop-color="#BFB2A0"/></linearGradient>
+    <radialGradient id="cSpot" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#FFE3B5" stop-opacity=".5"/><stop offset="1" stop-color="#FFE3B5" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#cBg)"/>
+  <!-- kệ sản phẩm phía sau: bokeh -->
+  <g filter="url(#dof24)" opacity=".85">
+    <rect x="0" y="360" width="1080" height="16" fill="#8A6A4A"/><rect x="0" y="720" width="1080" height="16" fill="#8A6A4A"/>
+  </g>
+  <g id="shelf" filter="url(#dof24)" opacity=".8"></g>
+  <circle cx="300" cy="220" r="90" fill="#FFD9A0" opacity=".35" filter="url(#glow)"/><circle cx="820" cy="180" r="110" fill="#FFD9A0" opacity=".3" filter="url(#glow)"/>
+  <!-- mặt quầy đá -->
+  <path d="M-80,1000 L1160,1000 L1160,1920 L-80,1920 Z" fill="url(#cTop)"/>
+  <path d="M100,1120 C300,1180 420,1100 620,1200 M500,1500 C700,1440 820,1560 1080,1480 M0,1700 C200,1660 300,1760 520,1720" stroke="#A89A88" stroke-opacity=".5" stroke-width="4" fill="none"/>
+  <rect x="-80" y="1000" width="1240" height="8" fill="#FFF3E0" opacity=".6"/>
+  <ellipse cx="620" cy="1150" rx="520" ry="200" fill="url(#cSpot)"/>
+  <!-- sản phẩm xếp hàng, càng lúc càng nhiều -->
+  <g>
+    <rect x="420" y="880" width="110" height="170" rx="10" fill="#F4EDE4"/><rect x="420" y="930" width="110" height="40" fill="#C9A45C"/>
+    <rect x="555" y="850" width="80" height="200" rx="24" fill="#E7C9BE"/><rect x="570" y="815" width="50" height="40" rx="8" fill="#2B2420"/>
+    <rect x="660" y="900" width="130" height="150" rx="12" fill="#DDE6D6"/><rect x="660" y="950" width="130" height="30" fill="#8DA68A"/>
+    <rect x="815" y="870" width="70" height="180" rx="20" fill="#F2E3D0"/><rect x="828" y="835" width="44" height="40" rx="8" fill="#C9A45C"/>
+    <!-- thẻ giá -->
+    <g fill="#FFFFFF"><rect x="438" y="1060" width="76" height="30" rx="6"/><rect x="567" y="1060" width="56" height="30" rx="6"/><rect x="688" y="1060" width="76" height="30" rx="6"/><rect x="822" y="1060" width="56" height="30" rx="6"/></g>
+    <g fill="#B8412C"><rect x="448" y="1071" width="56" height="8" rx="4"/><rect x="575" y="1071" width="40" height="8" rx="4"/><rect x="698" y="1071" width="56" height="8" rx="4"/><rect x="830" y="1071" width="40" height="8" rx="4"/></g>
+  </g>
+  <!-- tay nhân viên đẩy thêm một hộp -->
+  <path d="M1180,760 C1080,820 990,900 930,980" stroke="#2A2E33" stroke-width="120" stroke-linecap="round" fill="none"/>
+  <rect x="860" y="960" width="120" height="110" rx="10" fill="#FFFAF3" transform="rotate(-6 920 1015)"/>
+  <rect x="860" y="995" width="120" height="30" fill="#D9735A" transform="rotate(-6 920 1015)"/>
+  <path d="M905,1005 C890,980 915,960 940,975 L990,1010 C1010,1030 990,1060 965,1050 Z" fill="#E9BFA5"/>
+  <g fill="#E3A99A"><ellipse cx="900" cy="1000" rx="10" ry="7"/><ellipse cx="912" cy="1030" rx="10" ry="7"/></g>
+  <!-- máy in hoá đơn: tờ hoá đơn dài cuộn xuống mép quầy -->
+  <rect x="120" y="900" width="220" height="150" rx="18" fill="#2B2724"/><rect x="150" y="900" width="160" height="14" fill="#111"/>
+  <path d="M160,905 C150,760 200,700 170,600 L300,600 C330,700 280,760 290,905 Z" fill="#FBF8F2"/>
+  <path d="M175,1050 C170,1200 230,1300 190,1460 C170,1560 210,1640 200,1760 L320,1760 C330,1640 290,1560 310,1460 C350,1300 290,1200 300,1050 Z" fill="#F5F1E9"/>
+  <g stroke="#9C948A" stroke-width="5" stroke-linecap="round">
+    <path d="M200,1100 H280 M205,1140 H265 M200,1180 H285 M210,1220 H270 M205,1300 H290 M215,1340 H275 M210,1420 H290 M220,1460 H280 M215,1540 H295 M225,1580 H285 M220,1660 H300"/>
+  </g>
+  <!-- tiền cảnh: vai & tóc cô bé (nhoè), tay nắm điện thoại -->
+  <g filter="url(#dof24)">
+    <path d="M-100,1920 L-100,1300 C-20,1180 160,1150 300,1220 C380,1260 420,1380 420,1500 L460,1920 Z" fill="#C7B6A6"/>
+    <path d="M-100,1400 C-60,1000 40,760 200,700 C300,670 360,760 340,900 C320,1100 260,1250 180,1400 Z" fill="#1E1512"/>
+  </g>
+  <g filter="url(#dof6)">
+    <rect x="560" y="1540" width="230" height="400" rx="34" fill="#15171A" transform="rotate(8 675 1740)"/>
+    <rect x="578" y="1562" width="194" height="356" rx="22" fill="#F3F5F7" transform="rotate(8 675 1740)"/>
+    <rect x="605" y="1640" width="140" height="18" rx="9" fill="#C0392B" transform="rotate(8 675 1740)"/>
+    <path d="M520,1920 C520,1800 560,1720 620,1700 C660,1690 700,1720 700,1780 L720,1920 Z" fill="#E9BFA5"/>
+  </g>
+  <rect width="1080" height="1920" fill="#6F7A3A" opacity=".1" style="mix-blend-mode:color"/>
+  <rect width="1080" height="1920" fill="url(#vig)"/>
+  <rect width="1080" height="1920" filter="url(#grain)" opacity=".1" style="mix-blend-mode:overlay"/>
+</svg></div>
+
+<script>
+// Mưa và giọt nước trên kính (khung B), sản phẩm trên kệ (khung C)
+let s = 7; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+document.getElementById('rain').innerHTML = Array.from({ length: 70 }, () => {
+  const x = 170 + r() * 760, y = 280 + r() * 860, l = 40 + r() * 70;
+  return `<line x1="${x}" y1="${y}" x2="${x - l * .18}" y2="${y + l}"/>`; }).join('');
+document.getElementById('drops').innerHTML = Array.from({ length: 90 }, () =>
+  `<circle cx="${170 + r() * 740}" cy="${280 + r() * 860}" r="${2 + r() * 6}"/>`).join('');
+const cols = ['#E9C9A8', '#C9A45C', '#F4EDE4', '#D9735A', '#8DA68A', '#E7C9BE'];
+document.getElementById('shelf').innerHTML = [376, 736].flatMap(y => Array.from({ length: 11 }, (_, i) => {
+  const h = 90 + r() * 120, w = 50 + r() * 40;
+  return `<rect x="${20 + i * 98}" y="${y - h}" width="${w}" height="${h}" rx="12" fill="${cols[i % 6]}"/>`; })).join('');
+</script>
+</body></html>
