@@ -376,6 +376,7 @@ Công thức giữ tên **T.H.O.R** (trùng tên thương hiệu để cả team
 10. **Khẳng định, không phủ định.** ("Nhẹ nhàng với da" thay vì "Không làm hại da") (Hemingway — *Kansas City Star*)
 11. **"Chúng mình" thay vì "các bạn".** (Dante)
 12. **Ở khoảnh khắc mạnh nhất — từ đơn giản nhất.** (Shakespeare, Hemingway)
+13. **Video hướng dẫn: mở bằng chuyện của chính người nói** ("Hồi mới vào nghề, em cũng…"), không mở bằng khuyết điểm của khách — tránh gắt và tránh hiểu lầm. *(Rút ra từ góp ý duyệt kịch bản tẩy trang.)*
 
 ### E3. Bảng chuyển đổi "KỂ" → "CHO THẤY" (dùng hằng ngày)
 | ❌ Kể | ✅ Cho thấy |
