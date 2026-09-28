@@ -9,14 +9,16 @@ import { fileURLToPath } from 'url';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const dir = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(dir, '..'), out = path.join(root, 'build/cap');
+const SCALE = process.argv.includes('--scale') ? +process.argv[process.argv.indexOf('--scale') + 1] : 1;
+const SUFFIX = SCALE > 1 ? '-4k' : '';
+const root = path.resolve(dir, '..'), out = path.join(root, 'build/cap' + SUFFIX);
 fs.rmSync(out, { recursive: true, force: true }); fs.mkdirSync(out, { recursive: true });
 const FFMPEG = execFileSync('python3', ['-c', 'import imageio_ffmpeg as f;print(f.get_ffmpeg_exe())']).toString().trim();
 const total = JSON.parse(fs.readFileSync(path.join(dir, 'shots.json'))).reduce((a, s) => a + s.d, 0);
 const fps = 30, frames = Math.round(total * fps), W4 = 4, per = Math.ceil(frames / W4);
 const browser = await chromium.launch();
 await Promise.all(Array.from({ length: W4 }, async (_, w) => {
-  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
+  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: SCALE });
   await page.goto('file://' + path.join(dir, 'captions.html'));
   await page.evaluate(() => document.fonts.ready);
   for (let f = w * per; f < Math.min(frames, (w + 1) * per); f++) {
@@ -26,6 +28,7 @@ await Promise.all(Array.from({ length: W4 }, async (_, w) => {
 }));
 await browser.close();
 console.log('lớp phụ đề:', frames, 'khung');
+if (SCALE > 1) { await new Promise(r => setTimeout(r, 0)); console.log('4K: chỉ xuất lớp phụ đề, ghép bằng broll/xuat-4k.sh'); process.exit(0); }
 execFileSync(FFMPEG, ['-y', '-loglevel', 'error', '-i', path.join(dir, 'spa-nha-thor-broll.mp4'), '-framerate', String(fps), '-i', path.join(out, 'c%05d.png'),
   '-i', path.join(root, 'build/audio-broll.wav'),
   '-filter_complex', '[0:v][1:v]overlay=format=auto,format=yuv420p[v];[2:a]loudnorm=I=-18:TP=-1.5:LRA=11,alimiter=limit=0.8:attack=2:release=80:level=false[a]',

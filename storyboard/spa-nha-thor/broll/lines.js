@@ -1,7 +1,7 @@
 // Lời kể kèm mốc thời gian (giây) — lấy từ src/video.html; *chữ* là từ nhấn
 const LINES = [
  {
-  "t": "Bạn ấy chỉ muốn *hết mụn* trước ngày tốt nghiệp.",
+  "t": "Cô bé chỉ muốn *hết mụn* trước ngày tốt nghiệp.",
   "s": 0.4,
   "e": 3.18,
   "q": false

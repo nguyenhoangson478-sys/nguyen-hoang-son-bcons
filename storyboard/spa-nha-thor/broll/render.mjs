@@ -12,15 +12,18 @@ const dir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(dir, '..');
 const build = path.join(root, 'build/broll'); fs.mkdirSync(build, { recursive: true });
 const FFMPEG = execFileSync('python3', ['-c', 'import imageio_ffmpeg as f;print(f.get_ffmpeg_exe())']).toString().trim();
+// --scale 2: xuất 4K (2160x3840) — hình vector nên nét ở mọi độ phân giải
+const SCALE = process.argv.includes('--scale') ? +process.argv[process.argv.indexOf('--scale') + 1] : 1;
+const SUFFIX = SCALE > 1 ? '-4k' : '';
 const browser = await chromium.launch();
 async function open() {
-  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
+  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: SCALE });
   page.on('pageerror', e => console.log('LỖI', e.message));
   await page.goto('file://' + path.join(dir, 'video.html'));
   await page.evaluate(() => document.fonts.ready);
   return page;
 }
-const args = process.argv.slice(2);
+const args = process.argv.slice(2).filter((a, i, all) => a !== '--scale' && all[i - 1] !== '--scale');
 if (args[0] === '--sheet') {
   const page = await open();
   const list = await page.evaluate(() => LIST);
@@ -48,7 +51,7 @@ console.log(`${list.length} cú máy, ${total.toFixed(1)}s, ${frames} khung`);
 await Promise.all(Array.from({ length: W4 }, async (_, w) => {
   const from = w * per, to = Math.min(frames, from + per), page = await open();
   const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-pix_fmt', 'yuv420p', path.join(build, `part${w}.mp4`)], { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-pix_fmt', 'yuv420p', path.join(build, `part${w}${SUFFIX}.mp4`)], { stdio: ['pipe', 'inherit', 'inherit'] });
   for (let f = from; f < to; f++) {
     await page.evaluate(t => render(t), f / fps);
     const buf = await page.screenshot({ type: 'jpeg', quality: 93 });
@@ -58,6 +61,6 @@ await Promise.all(Array.from({ length: W4 }, async (_, w) => {
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
 }));
 await browser.close();
-fs.writeFileSync(path.join(build, 'list.txt'), Array.from({ length: W4 }, (_, w) => `file 'part${w}.mp4'`).join('\n'));
-execFileSync(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(build, 'list.txt'), '-c', 'copy', '-movflags', '+faststart', path.join(dir, 'spa-nha-thor-broll.mp4')]);
+fs.writeFileSync(path.join(build, 'list.txt'), Array.from({ length: W4 }, (_, w) => `file 'part${w}${SUFFIX}.mp4'`).join('\n'));
+execFileSync(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(build, 'list.txt'), '-c', 'copy', '-movflags', '+faststart', path.join(dir, `spa-nha-thor-broll${SUFFIX}.mp4`)]);
 console.log('xong', ((Date.now() - t0) / 1000).toFixed(0) + 's');
