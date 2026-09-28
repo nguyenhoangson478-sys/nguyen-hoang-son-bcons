@@ -94,13 +94,19 @@ shot('45-keo-khan', 3.3, (t, p) => {
 
 // ================= HỒI VII: TỰ QUYẾT =================
 shot('46-buoc-vao-spa', 2.6, (t, p) => {
-  setCam(0, 0, 1.04);
-  const step = eio(seq(t, .1, 1.8));
-  const shoe = (x, y, rot) => `<g transform="translate(${x},${y}) rotate(${rot})"><path d="M-90,0 C-90,-70 -40,-90 20,-90 C80,-90 140,-60 150,0 Z" fill="#FAFAF8"/><rect x="-95" y="-6" width="250" height="26" rx="12" fill="#D9D4CC"/><path d="M-30,-80 L-10,-40 M0,-84 L20,-44" stroke="#C9C2B8" stroke-width="5"/><rect x="-80" y="-300" width="90" height="220" fill="#8A9AB0"/></g>`;
+  setCam(0, 0, 1.04 + .03 * p);
+  const step1 = eio(seq(t, .1, 1.3)), step2 = eio(seq(t, 1, 2.3));
+  const leg = (x, y, lift, back) => `<g transform="translate(${x},${y - lift * 60})">
+    <path d="M-110,-900 L90,-900 L85,-150 C60,-130 -60,-130 -85,-150 Z" fill="${back ? '#6E7F98' : '#8A9AB0'}"/>
+    <path d="M-20,-900 L-10,-160" stroke="#5E6E88" stroke-width="5" opacity=".5"/><rect x="-92" y="-190" width="184" height="46" rx="10" fill="${back ? '#5E6E88' : '#7A8AA2'}"/>
+    <path d="M-60,-600 q40,20 90,0" stroke="#5E6E88" stroke-width="4" fill="none" opacity=".5"/>
+    <g transform="rotate(${-lift * 12})"><path d="M-110,0 C-110,-100 -60,-130 20,-130 C110,-130 190,-80 205,0 Z" fill="#FAFAF8"/><rect x="-115" y="-8" width="330" height="36" rx="16" fill="#D9D4CC"/>
+    <path d="M-40,-115 L-15,-60 M0,-120 L25,-64 M40,-118 L60,-66" stroke="#C9C2B8" stroke-width="7"/></g></g>`;
   return `<rect width="${W}" height="${H}" fill="${lg([[0, '#FFE9C8'], [1, '#E6CBA6']])}"/>`
-    + L(.3, `${glow(540, 700, 700, '#FFF3D6', .9)}<rect x="160" y="200" width="760" height="1100" fill="#FFF6E6" opacity=".6"/>${leafLogo(540, 520, .9)}`, 16)
-    + L(.6, `<rect x="-100" y="1400" width="1300" height="600" fill="#D8C4A8"/><rect x="-100" y="1380" width="1300" height="40" fill="#B59C82"/>`)
-    + L(.9, shoe(lerp(-100, 380, step), 1560, lerp(-10, 0, step)) + shoe(lerp(-300, 180, eio(seq(t, .6, 2.4))), 1700, 0));
+    + L(.3, `${glow(540, 600, 760, '#FFF3D6', .95)}<rect x="160" y="160" width="760" height="1100" fill="#FFF6E6" opacity=".6"/>${leafLogo(540, 470, .9)}${tree(860, 1300, 1)}`, 16)
+    + L(.5, beam(540, 0, 540, 1500, 200, 460, '#FFF5E0', .25) + dust(t, 30, 100, 300, 900, 1200, 88))
+    + L(.6, `<rect x="-100" y="1420" width="1300" height="600" fill="#D8C4A8"/><rect x="-100" y="1400" width="1300" height="40" fill="#B59C82"/>`)
+    + L(.95, leg(lerp(-150, 330, step2), 1920, Math.sin(step2 * Math.PI), true) + leg(lerp(40, 640, step1), 1800, Math.sin(step1 * Math.PI), false));
 }, () => ({ tint: '#F2C98A', tintA: .08, leak: '#FFE8C0', leakA: .45, vig: .45, grain: .07 }));
 
 shot('47a-ngoi-thang', 2.7, (t, p) => {

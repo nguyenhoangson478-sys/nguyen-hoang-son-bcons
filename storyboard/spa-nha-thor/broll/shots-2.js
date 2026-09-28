@@ -103,14 +103,19 @@ shot('29-cat-chai', 1.9, (t, p) => {
 }, () => ({ tint: '#C9A45C', tintA: .06, vig: .55, grain: .08 }));
 
 shot('30-ly-nuoc', 2.1, (t, p) => {
-  setCam(20 * p, 0, 1.03);
+  setCam(20 * p, 0, 1.06);
+  const put = eo(seq(t, 0, .8)), gy = lerp(-240, 0, put), wob = Math.sin(t * 9) * 6 * (1 - seq(t, .8, 2));
+  let caus = ''; for (let i = 0; i < 7; i++) caus += `<ellipse cx="${360 + Math.sin(t * 2 + i) * 40 + (i - 3) * 22}" cy="${1215 + (i % 3) * 10}" rx="${30 + 10 * Math.sin(t * 3 + i)}" ry="6" fill="#FFF6D8" opacity="${.35 + .2 * Math.sin(t * 4 + i * 2)}"/>`;
   return `<rect width="${W}" height="${H}" fill="${lg([[0, '#F4EDE2'], [1, '#D9CDBD']])}"/>`
-    + L(.3, `<rect x="0" y="1180" width="1080" height="800" fill="#EDE4D7"/>${glow(900, 300, 500, '#FFF4DC', .9)}`)
+    + L(.3, `<rect x="0" y="1180" width="1080" height="800" fill="#EDE4D7"/>${glow(900, 300, 500, '#FFF4DC', .9)}${tree(930, 1180, .8)}`, 10)
     + L(.5, beam(1050, 150, 300, 1500, 60, 240, '#FFF5E0', .3) + dust(t, 30, 200, 300, 800, 1200, 21))
     + L(.7, `<rect x="560" y="1110" width="380" height="120" rx="18" fill="#FFFFFF"/><rect x="560" y="1110" width="380" height="30" rx="14" fill="#F2EEE8"/>
-      <path d="M300,760 L420,760 L400,1180 L320,1180 Z" fill="#E8F2F6" opacity=".55"/><path d="M308,860 L412,860 L400,1180 L320,1180 Z" fill="#CFE3EC" opacity=".55"/>
-      <path d="M300,760 L420,760" stroke="#fff" stroke-width="6"/><rect x="316" y="780" width="12" height="380" fill="#fff" opacity=".5"/>
-      <ellipse cx="360" cy="1188" rx="90" ry="14" fill="#000" opacity=".08"/>`);
+      <ellipse cx="360" cy="1206" rx="${110 * put}" ry="16" fill="#000" opacity="${.08 * put}"/>${put > .95 ? caus : ''}
+      <g transform="translate(0,${gy})"><path d="M290,740 L430,740 L408,1190 L312,1190 Z" fill="#E8F2F6" opacity=".55"/>
+      <path d="M298,${860 + wob} Q360,${860 - wob} 422,${860 + wob} L408,1190 L312,1190 Z" fill="#CFE3EC" opacity=".6"/>
+      <path d="M298,${860 + wob} Q360,${860 - wob} 422,${860 + wob}" stroke="#fff" stroke-width="4" fill="none" opacity=".8"/>
+      <path d="M290,740 L430,740" stroke="#fff" stroke-width="6"/><rect x="308" y="760" width="14" height="410" fill="#fff" opacity=".5"/></g>`)
+    + (put < 1 ? L(1, hand(420, 1060 + gy, -8, 1.25, 'hold', { sleeve: '#2F4A3F', still: true }), 3) : '');
 }, () => ({ tint: '#F2D8A8', tintA: .06, lift: .06, vig: .4, grain: .06 }));
 
 shot('31a-nang-som', 2.2, (t, p) => {
@@ -184,7 +189,8 @@ shot('35-bai-co', 1.5, (t, p) => {
   const r = rng(90); let dapple = ''; for (let i = 0; i < 30; i++) dapple += glow(r() * 1080, 900 + r() * 1000, 40 + r() * 80, '#FFF4D0', .35 + .2 * Math.sin(t * 2 + i));
   return `<rect width="${W}" height="${H}" fill="${lg([[0, '#A9C79A'], [1, '#7FA070']])}"/>`
     + L(.3, `<g${blur(18)}>${[100, 400, 700, 1000].map(x => `<circle cx="${x}" cy="400" r="260" fill="#6E8F62"/>`).join('')}</g>`)
-    + L(.6, [[250, '#E6D5C0', 'long'], [540, '#9DB5C9', 'short'], [820, '#EDB9A6', 'long']].map(([x, c, h], i) => figure(x, 1700 + (i % 2) * 40, .8, { col: c, hair: h, armR: i === 1 ? -70 : 0, lean: (i - 1) * 4 })).join('') + dapple);
+    + L(.9, Array.from({ length: 9 }, (_, i) => { const r = rng(300 + i), x = r() * 1080 + Math.sin(t * 2 + i) * 60, y = ((r() * 1900 + t * 220) % 2000) - 80; return `<ellipse cx="${x}" cy="${y}" rx="18" ry="9" fill="#C9A45C" opacity=".8" transform="rotate(${t * 120 + i * 40} ${x} ${y})"/>`; }).join(''), 1)
+    + L(.6, [[250, '#E6D5C0', 'long'], [540, '#9DB5C9', 'short'], [820, '#EDB9A6', 'long']].map(([x, c, h], i) => figure(x, 1700 + (i % 2) * 40, .8, { col: c, hair: h, armR: i === 1 ? -70 : 0, lean: (i - 1) * 4, laugh: i === 1 ? .4 : 1 })).join('') + dapple);
 }, () => ({ tint: '#F2C98A', tintA: .07, leak: '#FFF0C8', leakA: .35, vig: .4, grain: .07 }));
 
 shot('36-vi-mong', 2.2, (t, p) => {

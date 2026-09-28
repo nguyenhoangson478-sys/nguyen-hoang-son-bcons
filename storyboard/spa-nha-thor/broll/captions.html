@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><title>Phụ đề B-roll</title>
+<link href="../src/fonts.css" rel="stylesheet">
+<style>
+*{margin:0;box-sizing:border-box}
+html,body{background:transparent;width:1080px;height:1920px;overflow:hidden}
+#band{position:absolute;left:0;right:0;top:1180px;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.5) 55%,rgba(0,0,0,.55));opacity:0}
+#cap{position:absolute;left:70px;right:70px;bottom:330px;text-align:center;color:#fff;font:700 58px/1.3 'Be Vietnam Pro';
+  text-shadow:0 2px 4px rgba(0,0,0,.6),0 6px 28px rgba(0,0,0,.55);letter-spacing:.2px;text-wrap:balance}
+#cap.q{font:italic 600 68px/1.25 'Lora'}
+#cap b{color:#F6C77E;font-weight:800}
+#cap .w{display:inline-block;opacity:0}
+</style></head><body>
+<div id="band"></div><div id="cap"></div>
+<script src="lines.js"></script>
+<script>
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const cap = document.getElementById('cap'), band = document.getElementById('band');
+let cur = -1, words = [];
+function html(text) {
+  return text.split(/(\*[^*]+\*)/).filter(Boolean).map(seg => {
+    const b = seg.startsWith('*');
+    const h = seg.replace(/\*/g, '').split(/(\s+)/).map(w => /^\s+$/.test(w) ? ' ' : w ? `<span class="w">${w}</span>` : '').join('');
+    return b ? `<b>${h}</b>` : h;
+  }).join('');
+}
+window.render = function (T) {
+  let k = -1; LINES.forEach((l, i) => { if (T >= l.s - .12) k = i; });
+  const l = LINES[k], next = LINES[k + 1];
+  const until = l ? Math.min(l.e + .9, next ? next.s - .08 : l.e + 1.6) : 0;
+  const vis = l ? clamp((T - l.s + .12) / .15) * clamp((until - T) / .2) : 0;
+  if (k !== cur) { cur = k; if (l) { cap.innerHTML = html(l.t); cap.classList.toggle('q', l.q); words = [...cap.querySelectorAll('.w')]; } }
+  cap.style.opacity = vis; band.style.opacity = vis * .9;
+  if (l) words.forEach((w, i) => {
+    const wt = l.s + (l.e - l.s) * i / words.length, a = clamp((T - wt + .05) / .16);
+    w.style.opacity = a; w.style.transform = `translateY(${(1 - a) * 12}px)`;
+  });
+};
+render(0);
+</script></body></html>

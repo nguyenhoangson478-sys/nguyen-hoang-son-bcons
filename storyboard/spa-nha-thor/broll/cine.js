@@ -18,6 +18,13 @@ const seq = (t, a, b) => clamp((t - a) / (b - a));
 function rng(seed) { let s = seed * 9301 + 49297; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
 const noise1 = (t, k = 1) => Math.sin(t * 1.3 * k) * .6 + Math.sin(t * 2.7 * k + 1.7) * .3 + Math.sin(t * 5.1 * k + .4) * .1;
 
+// Thời gian (giây) trong cú máy hiện tại — bộ máy đặt trước mỗi khung, để nhân vật tự "sống"
+let NOW = 0;
+function blinkAmt(t, seed = 0) {
+  const per = 3.1 + (seed % 5) * .23, ph = ((t + seed * .7) % per + per) % per;
+  return ph < .17 ? Math.sin(Math.PI * ph / .17) : 0;
+}
+
 // ---------- defs dùng một lần mỗi khung ----------
 let DEFS = [], REG = {}, UID = 0;
 function resetDefs() { DEFS = []; REG = {}; UID = 0; }
@@ -118,6 +125,7 @@ function bottle(x, y, s, col, capCol = '#2B2420', label = '#fff', kind = 0) {
 // Cổ tay ở (0,0), ngón tay hướng lên (-y). pose: open | point | hold | pen | touch
 function hand(x, y, rot, s, pose = 'open', o = {}) {
   const { sleeve = null, skin = P.skin, sh = P.skinSh, flip = false, tremble = 0, t = 0 } = o;
+  if (!o.still) { const sd = Math.abs(Math.round(x + y)) % 11; x += Math.sin(NOW * 1.3 + sd) * 4; y += Math.sin(NOW * 1.1 + sd) * 3; rot += Math.sin(NOW * .9 + sd) * .8; }
   const g = lg([[0, skin], [.55, skin], [1, sh]], 0, 0, 1, 0);
   let fingers = '';
   const cap = (fx, fy, len, w, ang = 0, nail = true) => `<g transform="translate(${fx},${fy}) rotate(${ang})"><path d="M${-w / 2},${w / 2} L${-w * .4},${-len + w * .4} C${-w * .4},${-len - w * .05} ${w * .4},${-len - w * .05} ${w * .4},${-len + w * .4} L${w / 2},${w / 2} Z" fill="${g}"/><path d="M${-w * .3},${-len * .45} q${w * .3},${w * .12} ${w * .6},0" stroke="${sh}" stroke-width="2.5" fill="none" opacity=".45"/>${nail ? `<rect x="${-w * .32}" y="${-len + w * .12}" width="${w * .64}" height="${w * .75}" rx="${w * .3}" fill="${P.nail}" opacity=".9"/>` : ''}</g>`;
@@ -136,7 +144,10 @@ function hand(x, y, rot, s, pose = 'open', o = {}) {
 // ---------- khuôn mặt chính diện ----------
 // Tâm mặt (0,0), cao ~560. o: acne(0..16) red(0..1) expr: calm|sad|smile|cry  look: dx lệch mắt; closed
 function faceFront(x, y, s, o = {}) {
-  const { acne = 0, red = 0, expr = 'calm', look = 0, closed = 0, tear = 0, lightX = -1, hair = P.hair, gown = null, top = '#D8CBBE', blushA = .5, spots: fixed = null, capOn = false } = o;
+  const { acne = 0, red = 0, expr = 'calm', look: look0 = 0, closed: closed0 = 0, tear = 0, lightX = -1, hair = P.hair, gown = null, top = '#D8CBBE', blushA = .5, spots: fixed = null, capOn = false } = o;
+  const al = o.still ? 0 : 1, sd = Math.abs(Math.round(x * 7 + y * 3)) % 10;
+  const closed = Math.max(closed0, al * blinkAmt(NOW, sd)), look = look0 + al * Math.sin(NOW * .7 + sd) * 4;
+  const sway = al * Math.sin(NOW * 1.05 + sd) * 1.4, breath = al * Math.sin(NOW * 1.7 + sd) * 4, hs = al * Math.sin(NOW * 1.3 + sd) * 1.3;
   const skinG = lg([[0, lightX < 0 ? '#F6D3BD' : P.skinSh], [.5, P.skin], [1, lightX < 0 ? P.skinSh : '#F6D3BD']], 0, 0, 1, 0);
   const eye = (ex, side) => {
     if (closed > .85) return `<path d="M${ex - 52},${-6} C${ex - 25},${10} ${ex + 25},${10} ${ex + 52},${-6}" stroke="#1A1210" stroke-width="7" fill="none" stroke-linecap="round"/>`;
@@ -166,8 +177,8 @@ function faceFront(x, y, s, o = {}) {
     spots += glow(ax, ay, 16, '#D0453A', .45) + `<circle cx="${ax}" cy="${ay}" r="${4 + r() * 3}" fill="#B83A30"/><circle cx="${ax - 1.5}" cy="${ay - 2}" r="1.6" fill="#fff" opacity=".6"/>`;
   }
   const face = `M0,-285 C150,-285 218,-170 212,-40 C206,90 140,205 0,255 C-140,205 -206,90 -212,-40 C-218,-170 -150,-285 0,-285 Z`;
-  return `<g transform="translate(${x},${y}) scale(${s})">
-    <path d="M-235,-110 C-250,-340 250,-340 235,-110 L270,430 C150,480 -150,480 -270,430 Z" fill="${hair}"/>
+  return `<g transform="translate(${x},${y + breath * s}) scale(${s}) rotate(${sway})">
+    <path d="M-235,-110 C-250,-340 250,-340 235,-110 L270,430 C150,480 -150,480 -270,430 Z" fill="${hair}" transform="rotate(${hs} 0 -260)"/>
     <path d="M-62,180 L62,180 L70,430 L-70,430 Z" fill="${lg([[0, P.skinSh], [1, P.skinDeep]])}"/>
     ${gown ? `<path d="M-70,388 C-150,398 -250,430 -300,515 C-330,568 -340,650 -342,900 L342,900 C340,650 330,568 300,515 C250,430 150,398 70,388 Z" fill="${gown}"/>` : `<path d="M-70,388 C-150,398 -240,430 -292,515 C-322,568 -332,650 -334,900 L334,900 C332,650 322,568 292,515 C240,430 150,398 70,388 Z" fill="${top}"/><path d="M-70,388 C-40,420 40,420 70,388" stroke="#000" stroke-opacity=".12" stroke-width="10" fill="none"/>`}
     <path d="${face}" fill="${skinG}"/>
@@ -177,9 +188,9 @@ function faceFront(x, y, s, o = {}) {
     <path d="M-8,-20 C-12,20 -16,50 -26,68 C-12,80 12,80 26,68" stroke="${P.skinDeep}" stroke-width="4" fill="none" opacity=".45" stroke-linecap="round"/>
     ${eye(-88, -1)}${eye(88, 1)}${brows}${mouth}
     ${tear ? `<path d="M${95},${22 + tear * 120} q-10,22 0,30 q10,-8 0,-30z" fill="#CFE6F5" opacity=".9"/><path d="M95,20 L95,${22 + tear * 120}" stroke="#E8F4FB" stroke-width="5" opacity=".45"/>` : ''}
-    <path d="M-6,-296 C-150,-296 -238,-196 -232,-30 C-228,120 -252,270 -268,440 L-305,440 C-296,230 -300,-40 -262,-170 C-220,-290 -90,-322 -6,-296 Z" fill="${hair}"/>
+    <g transform="rotate(${hs} 0 -280)"><path d="M-6,-296 C-150,-296 -238,-196 -232,-30 C-228,120 -252,270 -268,440 L-305,440 C-296,230 -300,-40 -262,-170 C-220,-290 -90,-322 -6,-296 Z" fill="${hair}"/>
     <path d="M6,-296 C150,-296 238,-196 232,-30 C228,120 252,270 268,440 L305,440 C296,230 300,-40 262,-170 C220,-290 90,-322 6,-296 Z" fill="${hair}"/>
-    <path d="M-4,-292 C-90,-280 -170,-220 -196,-120 C-150,-200 -80,-240 -4,-250 Z" fill="${hair}"/><path d="M4,-292 C90,-280 170,-220 196,-120 C150,-200 80,-240 4,-250 Z" fill="${hair}"/>
+    </g><path d="M-4,-292 C-90,-280 -170,-220 -196,-120 C-150,-200 -80,-240 -4,-250 Z" fill="${hair}"/><path d="M4,-292 C90,-280 170,-220 196,-120 C150,-200 80,-240 4,-250 Z" fill="${hair}"/>
     <path d="M-218,-140 C-170,-315 170,-315 218,-140 C140,-236 40,-252 0,-248 C-40,-252 -140,-236 -218,-140 Z" fill="${hair}"/>
     <path d="M0,-270 L0,-236" stroke="${P.skinSh}" stroke-width="5" opacity=".6"/>
     <path d="M-150,-250 C-200,-180 -215,-80 -210,20" stroke="${P.hairHi}" stroke-width="10" fill="none" opacity=".5" stroke-linecap="round"/>
@@ -189,7 +200,9 @@ function faceFront(x, y, s, o = {}) {
 
 // ---------- khuôn mặt nghiêng (nhìn sang trái) ----------
 function faceProfile(x, y, s, o = {}) {
-  const { acne = 0, red = 0, closed = 0, tear = 0, rim = null, dark = false, down = 0 } = o;
+  const { acne = 0, red = 0, closed: closed0 = 0, tear = 0, rim = null, dark = false, down: down0 = 0 } = o;
+  const al = o.still ? 0 : 1, closed = Math.max(closed0, al * blinkAmt(NOW, 3)), down = down0 + al * Math.sin(NOW * 1.2) * 1.2;
+  y += al * Math.sin(NOW * 1.7) * 4 * s;
   const skinF = dark ? '#0A0B10' : lg([[0, '#F6D3BD'], [.6, P.skin], [1, P.skinSh]], 0, 0, 1, 0);
   const r = rng(11); let spots = '';
   for (let i = 0; i < acne; i++) { const ax = 10 + r() * 150, ay = -40 + r() * 190; spots += glow(ax, ay, 15, '#D0453A', .45) + `<circle cx="${ax}" cy="${ay}" r="${4 + r() * 3}" fill="#B83A30"/>`; }
@@ -214,7 +227,12 @@ function faceProfile(x, y, s, o = {}) {
 // Đứng tại chân (x,y), cao ~ 900*s. o: back, gown, cap, mask, hair: long|bun|short, col, rim, dark
 function figure(x, y, s, o = {}) {
   const { back = false, gown = null, cap = false, mask = false, hair = 'long', col = '#D8CBBE', skin = P.skin, rim = null, dark = null,
-    armL = 0, armR = 0, lean = 0, suitcase = false, walk = 0, hairCol = P.hair, pants = '#3A3A44' } = o;
+    armL: aL0 = 0, armR: aR0 = 0, lean: lean0 = 0, suitcase = false, walk = 0, hairCol = P.hair, pants = '#3A3A44', laugh = 0 } = o;
+  const al = o.still ? 0 : 1, sd = Math.abs(Math.round(x)) % 13;
+  const sw = walk ? Math.sin(walk * Math.PI * 2) * 16 : 0;
+  const armL = aL0 + sw + al * Math.sin(NOW * 1.3 + sd) * 2, armR = aR0 - sw + al * Math.sin(NOW * 1.1 + sd + 1) * 2;
+  const lean = lean0 + al * Math.sin(NOW * .9 + sd) * .8 + laugh * Math.sin(NOW * 9 + sd) * 2.5;
+  y += al * (Math.sin(NOW * 1.6 + sd) * 4 + (walk ? -Math.abs(Math.sin(walk * Math.PI * 2)) * 10 : 0) - laugh * Math.abs(Math.sin(NOW * 9 + sd)) * 10) * s;
   const C = c => dark || c;
   const leg = (sx, ph) => { const k = Math.sin(walk * Math.PI * 2 + ph) * (walk ? 18 : 0); return `<path d="M${sx - 26},-300 L${sx + 26},-300 L${sx + 20 + k},-10 L${sx - 18 + k},-10 Z" fill="${C(gown ? gown : pants)}"/><ellipse cx="${sx + k}" cy="-8" rx="34" ry="14" fill="${C('#231C18')}"/>`; };
   const body = gown ? `<path d="M-120,-640 C-150,-560 -170,-300 -190,-40 L190,-40 C170,-300 150,-560 120,-640 Z" fill="${C(gown)}"/>`
@@ -224,8 +242,9 @@ function figure(x, y, s, o = {}) {
     : `<ellipse cx="0" cy="-790" rx="96" ry="112" fill="${C(skin)}"/>${dark ? '' : `<circle cx="-34" cy="-800" r="8" fill="#2A1C16"/><circle cx="34" cy="-800" r="8" fill="#2A1C16"/>${mask ? '' : '<path d="M-24,-748 Q0,-730 24,-748" stroke="#9A5A50" stroke-width="6" fill="none" stroke-linecap="round"/>'}<ellipse cx="-55" cy="-765" rx="18" ry="10" fill="${P.blush}" opacity=".6"/><ellipse cx="55" cy="-765" rx="18" ry="10" fill="${P.blush}" opacity=".6"/>`}${mask ? `<path d="M-80,-780 C-60,-730 60,-730 80,-780 L84,-720 C40,-690 -40,-690 -84,-720 Z" fill="${C('#EEF3F6')}"/>` : ''}`;
   const hairS = hair === 'long' ? `<path d="M-108,-800 C-120,-930 120,-930 108,-800 L130,-560 C60,-540 -60,-540 -130,-560 Z" fill="${C(hairCol)}"/>`
     : hair === 'bun' ? `<circle cx="0" cy="${back ? -905 : -915}" r="52" fill="${C(hairCol)}"/><path d="M-102,-790 C-110,-915 110,-915 102,-790 L100,-740 L-100,-740 Z" fill="${C(hairCol)}"/>`
-      : `<path d="M-104,-790 C-112,-925 112,-925 104,-790 L100,-760 L-100,-760 Z" fill="${C(hairCol)}"/>`;
-  const fringe = !back && hair !== 'bun' ? `<path d="M-100,-820 C-90,-900 90,-900 100,-820 C60,-860 -60,-860 -100,-820 Z" fill="${C(hairCol)}"/>` : '';
+      : back ? `<path d="M-104,-790 C-112,-925 112,-925 104,-790 L100,-740 L-100,-740 Z" fill="${C(hairCol)}"/>`
+        : `<path d="M-106,-780 C-116,-930 116,-930 106,-780 C96,-830 60,-858 0,-856 C-60,-858 -96,-830 -106,-780 Z" fill="${C(hairCol)}"/>`;
+  const fringe = !back && hair === 'long' ? `<path d="M-106,-790 C-114,-928 114,-928 106,-790 C80,-838 30,-846 0,-834 C-30,-846 -80,-838 -106,-790 Z" fill="${C(hairCol)}"/>` : '';
   const capS = cap ? `<rect x="-80" y="-915" width="160" height="40" rx="8" fill="${C('#15191E')}"/><polygon points="-150,-918 0,-962 150,-918 0,-874" fill="${C('#20262D')}"/><path d="M0,-918 L110,-908 L110,-860" stroke="${C(P.gold)}" stroke-width="6" fill="none"/>` : '';
   const bag = suitcase ? `<g transform="translate(200,0)"><rect x="-70" y="-300" width="140" height="290" rx="20" fill="${C('#5A4A42')}"/><path d="M-30,-300 L-30,-420 L30,-420 L30,-300" stroke="${C('#2B2420')}" stroke-width="12" fill="none"/><circle cx="-40" cy="-6" r="12" fill="${C('#111')}"/><circle cx="40" cy="-6" r="12" fill="${C('#111')}"/></g>` : '';
   const rimS = rim ? `<path d="M-100,-850 C-60,-910 60,-910 100,-850 M120,-640 C140,-560 145,-440 125,-300" stroke="${rim}" stroke-width="6" fill="none" opacity=".75"/>` : '';

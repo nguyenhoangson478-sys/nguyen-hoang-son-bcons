@@ -162,7 +162,13 @@ Cột "Lời" là câu Thoa nói ở đoạn đó.
 ## 5. Bản dựng thực tế: mốc thời gian để tìm cú máy trong Premiere
 
 Các cú dài hơn 4 giây đã được tách đôi (4, 7, 26, 31, 38, 43, 47, 49, 52), nên tổng là **61 cú**.
-File `spa-nha-thor-broll.mp4` không có tiếng. File `spa-nha-thor-broll-co-nhac.mp4` có nhạc nền, nhạc kinh dị, tiếng boom lúc màn hình đen và tiếng màn trập.
+Có ba bản video:
+- `spa-nha-thor-broll-phu-de.mp4`: **có phụ đề** lời kể (chữ hiện dần theo nhịp đọc, từ nhấn tô vàng) và nhạc.
+- `spa-nha-thor-broll-co-nhac.mp4`: không phụ đề, có nhạc nền, nhạc kinh dị, tiếng boom lúc màn hình đen, tiếng màn trập.
+- `spa-nha-thor-broll.mp4`: không phụ đề, không tiếng (để ghép với Thoa trong Premiere).
+
+Nhân vật tự "sống" trong mọi cú: chớp mắt, thở, nghiêng đầu, tóc đung đưa, ánh mắt đảo, dáng người nhún, tay vung khi đi.
+Phụ đề lấy từ `broll/lines.js`. Khi có giọng Thoa thật, chỉ cần sửa mốc thời gian ở đó rồi chạy `node broll/phu-de.mjs`.
 
 | # | Bắt đầu | Dài | Cú máy |
 |---|---|---|---|

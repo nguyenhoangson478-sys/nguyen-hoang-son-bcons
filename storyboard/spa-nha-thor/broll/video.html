@@ -16,7 +16,7 @@ const stage = document.getElementById('stage');
 window.render = function (T) {
   let k = SHOTS.findIndex(s => T < s.start + s.d); if (k < 0) k = SHOTS.length - 1;
   const s = SHOTS[k], t = T - s.start, p = clamp(t / s.d);
-  resetDefs(); setCam();
+  resetDefs(); setCam(); NOW = t;
   const body = s.draw(t, p);
   const g = s.grade(t, p);
   const fade = (k === SHOTS.length - 1) ? clamp((s.d - t) / 1.5) : 1;
