@@ -1,3 +1,4 @@
 build/
 # video 4K quá nặng cho GitHub (>100 MB) — giao theo từng đoạn nhỏ
 broll/*-4k.mp4
+broll/4k/
